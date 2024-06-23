@@ -29,3 +29,8 @@ google-services.json
 # Android Profiling
 *.hprof
 /.dart_tool
+/.dart_tool
+/.dart_tool/dartpad
+.dart_tool/package_config.json
+.dart_tool/dartpad/web_plugin_registrant.dart
+.dart_tool/package_config_subset

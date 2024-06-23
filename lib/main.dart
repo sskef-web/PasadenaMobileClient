@@ -18,13 +18,13 @@ class MyApp extends StatelessWidget {
         title: appTitle,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromRGBO(11, 106, 108, 1.0)),
+              seedColor: const Color.fromRGBO(17, 45, 48, 1)),
           useMaterial3: true,
           fontFamily: 'Exo2',
         ),
         darkTheme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromRGBO(11, 106, 108, 1.0),
+              seedColor: const Color.fromRGBO(17, 45, 48, 1),
               brightness: Brightness.dark),
           useMaterial3: true,
           fontFamily: 'Exo2',
