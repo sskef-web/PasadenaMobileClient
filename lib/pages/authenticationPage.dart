@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pasadena_mobile_client/data/loginresponse.dart';
 import 'package:pasadena_mobile_client/pages/homePage.dart';
 import 'package:pasadena_mobile_client/pages/loginPage.dart';
@@ -19,7 +21,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   String confirmPassword = '';
   String firstName = '';
   String lastName = '';
-  String avatarPath = 'StaticFiles/avatars/38c7301d-b794-44b4-935b-aeb70527b1a5.jpeg';
+  String avatarPath =
+      'StaticFiles/avatars/38c7301d-b794-44b4-935b-aeb70527b1a5.jpeg';
   var userId;
   var token;
   var refreshToken;
@@ -51,15 +54,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     return prefs.getString('cookies');
   }
 
-  Future<void> _changePassword(String email, String password) async {
-
-  }
+  Future<void> _changePassword(String email, String password) async {}
 
   Future<LoginResponse> login(String email, String password) async {
     return LoginResponse(token, userId, refreshToken, 'Test');
   }
 
-  Future<LoginResponse> registrate(String email, String password, String firstName, String lastName, String avatarPath, int clubId, String proofCode) async {
+  Future<LoginResponse> registrate(
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String avatarPath,
+      int clubId,
+      String proofCode) async {
     return LoginResponse(token, userId, refreshToken, 'Test');
   }
 
@@ -87,8 +95,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           );
         },
       );*/
-    } 
-    else {
+    } else {
       /*await login(email, password);
       savedCookies = await loadCookies();
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -102,8 +109,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   void _register() async {
-
-      /*Navigator.pop(context, true);
+    /*Navigator.pop(context, true);
       await registrate(
           email, password, firstName, lastName, avatarPath, clubId, proofCode);
       savedCookies = await loadCookies();
@@ -162,80 +168,127 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (_isLoggedIn) {
       return HomePage(logoutCallback: _logout);
-    } 
-    else {
+    } else {
       return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(16.0),
-                child: Transform.scale(
-                  scale: 0.8,
-                  child: Image.asset(
-                    'assets/images/pasadenaLogo.png',
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(16.0),
+                  child: Transform.scale(
+                    scale: 0.8,
+                    child: Image.asset(
+                      'assets/images/pasadenaLogo.png',
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 60.0,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          side: BorderSide(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          // Добавьте здесь код для обработки нажатия на кнопку "Войти"
-                        },
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: double.infinity,
+                        height: 60.0,
                         child: Text(
-                          'Войти',
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
+                          'Witamy',
+                          textAlign: TextAlign.center,
+                          textScaler: TextScaler.linear(2.0),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16.0,),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 60.0,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          side: const BorderSide(color: Colors.white),
-                          textStyle: const TextStyle(color: Colors.transparent),
-                        ),
-                        onPressed: () {
-                          // Добавьте здесь код для обработки нажатия на кнопку "Зарегистрироваться"
-                        },
-                        child: Text(
-                          'Зарегистрироваться',
-                          style: TextStyle(fontSize: 20.0),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 60.0,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            side: BorderSide(color: Colors.white),
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            'Zaloguj się',
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 60.0,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: const BorderSide(color: Colors.white),
+                            foregroundColor: Color.fromRGBO(17, 45, 48, 1),
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            'Zarejestruj się',
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 36.0,
+                      ),
+                      const SizedBox(
+                        width: double.infinity,
+                        height: 40.0,
+                        child: Text(
+                          'Nasze sieci społecznościowe',
+                          textAlign: TextAlign.center,
+                          textScaler: TextScaler.linear(1.2),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              // Добавьте здесь код для обработки нажатия на иконку Facebook
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.facebook_outlined,
+                                color: Color.fromRGBO(17, 45, 48, 1),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                          InkWell(
+                            onTap: () {
+                              // Добавьте здесь код для обработки нажатия на иконку Instagram
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Icon(FontAwesomeIcons.instagram,
+                                  color: Color.fromRGBO(17, 45, 48, 1)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
     }
   }
 }
