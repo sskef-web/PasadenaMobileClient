@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pasadena_mobile_client/data/loginresponse.dart';
 import 'package:pasadena_mobile_client/pages/homePage.dart';
-import 'package:pasadena_mobile_client/pages/loginPage.dart';
 import 'package:pasadena_mobile_client/main.dart';
 import 'package:flutter/material.dart';
+import 'package:pasadena_mobile_client/pages/loginPage.dart';
+import 'package:pasadena_mobile_client/pages/registerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -168,8 +169,40 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     });
   }
 
+  void navigateToLoginPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            LoginPage(
+              key: widget.key,
+              login: _login,
+              updateEmail: _updateEmail,
+              updatePassword:  _updatePassword,
+            ),
+      ),
+    );
+  }
+
+  void navigateToRegisterPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            RegisterPage(
+              key: widget.key,
+              login: _login,
+              updateEmail: _updateEmail,
+              updatePassword:  _updatePassword,
+            ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     if (_isLoggedIn) {
       return HomePage(logoutCallback: _logout);
     } else {
@@ -181,7 +214,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 flex: 2,
                 child: Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Transform.scale(
                     scale: 0.8,
                     child: Image.asset(
@@ -193,17 +226,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: double.infinity,
                         height: 60.0,
                         child: Text(
-                          'Witamy',
+                          AppLocalizations.of(context)!.welcome,
                           textAlign: TextAlign.center,
-                          textScaler: TextScaler.linear(2.0),
+                          textScaler: TextScaler.linear(2.5),
                         ),
                       ),
                       SizedBox(
@@ -211,9 +244,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         height: 60.0,
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            side: BorderSide(color: Colors.white),
+                            side: const BorderSide(color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            navigateToLoginPage(context);
+                          },
                           child: const Text(
                             'Zaloguj się',
                             style:
@@ -231,9 +266,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             side: const BorderSide(color: Colors.white),
-                            foregroundColor: Color.fromRGBO(17, 45, 48, 1),
+                            foregroundColor: const Color.fromRGBO(17, 45, 48, 1),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            navigateToRegisterPage(context);
+                          },
                           child: const Text(
                             'Zarejestruj się',
                             style: TextStyle(fontSize: 20.0),
@@ -241,7 +278,46 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 36.0,
+                        height: 32.0,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(AppLocalizations.of(context)!.selectLanguage),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _changeLanguage('pl');
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Polski'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _changeLanguage('ru');
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Russian'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Text(AppLocalizations.of(context)!.selectLanguage),
+                      ),
+                      const SizedBox(
+                        height: 16.0,
                       ),
                       const SizedBox(
                         width: double.infinity,
@@ -252,6 +328,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           textScaler: TextScaler.linear(1.2),
                         ),
                       ),
+                      
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -291,6 +368,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       );
     }
   }
+  void _changeLanguage(String languageCode) {
+    setState(() {
+      AppLocalizations.delegate.load(Locale(languageCode));
+    });
+}
 }
 /*
       LoginPage(

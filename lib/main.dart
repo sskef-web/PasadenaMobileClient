@@ -1,5 +1,7 @@
 import 'package:pasadena_mobile_client/pages/authenticationPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 String appTitle = "Авторизация";
 String baseURL = 'https://sskef.site/api/';
@@ -15,6 +17,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: MaterialApp(
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('pl'), // Polish
+          Locale('ru'), // Russian
+        ],
         title: appTitle,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
