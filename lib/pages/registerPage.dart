@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Function() login;
+  final Function() register;
   final Function(String) updateEmail;
   final Function(String) updatePassword;
+  final Function(String) updateFirstname;
+  final Function(String) updateLastname;
+  final Function(BuildContext) navigateToLoginPage;
 
-  const RegisterPage({
-    super.key,
-    required this.login,
-    required this.updateEmail,
-    required this.updatePassword  
-  });
+  const RegisterPage(
+      {super.key,
+      required this.register,
+      required this.updateEmail,
+      required this.updatePassword,
+      required this.updateFirstname,
+      required this.updateLastname,
+      required this.navigateToLoginPage});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -32,12 +37,11 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: constraints.maxWidth * 0.4,
                   height: constraints.maxHeight * 0.2,
                   padding: const EdgeInsets.all(32),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    /*'Witaj, zaloguj się!'*/AppLocalizations.of(context)!.helloWorld,
+                    AppLocalizations.of(context)!.registerTitle,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                       fontSize: 32.0,
@@ -59,12 +63,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
-                          'Imię',
+                          AppLocalizations.of(context)!.name,
                           textAlign: TextAlign.left,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                             color: Color.fromRGBO(17, 45, 48, 1),
@@ -93,10 +97,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: Text('Nazwisko',
-                            style: TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(AppLocalizations.of(context)!.surname,
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(17, 45, 48, 1),
@@ -106,7 +110,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: const TextStyle(
                           color: Color.fromRGBO(17, 45, 48, 1),
                         ),
-                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Brzęczyszczykiewicz',
                           hintStyle: TextStyle(
@@ -138,7 +141,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: const TextStyle(
                           color: Color.fromRGBO(17, 45, 48, 1),
                         ),
-                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Poczta@gmail.com',
                           hintStyle: TextStyle(
@@ -157,10 +159,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: Text('Hasło',
-                            style: TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(AppLocalizations.of(context)!.password,
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(17, 45, 48, 1),
@@ -188,14 +190,16 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: Text('Potwierdzenie hasła',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(17, 45, 48, 1),
-                            )),
+                      const SizedBox(height: 16.0),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child:
+                            Text(AppLocalizations.of(context)!.confirmPassword,
+                                style: const TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(17, 45, 48, 1),
+                                )),
                       ),
                       TextFormField(
                         style: const TextStyle(
@@ -218,36 +222,20 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 32.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Zapomniałeś hasła?',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(17, 45, 48, 1),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                       const SizedBox(height: 32.0),
                       Padding(
-                        padding: EdgeInsets.all(0.0),
+                        padding: const EdgeInsets.all(0.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.register();
+                          },
                           style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity,80.0),
+                            minimumSize: const Size(double.infinity, 80.0),
                           ),
-                          child: const Text(
-                            'Zaloguj się',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.registerButton,
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -256,29 +244,31 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       const SizedBox(height: 32.0),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                              'Czy masz już konto?',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey,
-                              ),
+                            AppLocalizations.of(context)!.haveAccount,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
                             ),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Zaloguj się',
+                            onPressed: () {
+                              widget.navigateToLoginPage(context);
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.loginButton,
                               textAlign: TextAlign.right,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(17, 45, 48, 1),

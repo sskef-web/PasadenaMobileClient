@@ -1,5 +1,23 @@
 {
-    "helloWorld": "Привет Мир!",
+    "helloWorld": "Привет мир!",
     "selectLanguage": "Изменить язык",
-    "welcome": "Приветствуем"
+    "welcome": "Добро пожаловать",
+    "loginButton": "Авторизоваться",
+    "registerButton": "Зарегистрироваться",
+    "socialText": "Наши социальные сети",
+    "loginTitle": "Здравствуйте, авторизуйтесь!",
+    "registerTitle": "Создание аккаунта",
+    "password": "Пароль",
+    "forgotPassword": "Забыли пароль?",
+    "noAccount": "У вас нет аккаунта?",
+    "haveAccount": "У вас уже есть аккаунт?",
+    "name": "Имя",
+    "surname": "Фамилия",
+    "confirmPassword": "Подтверждение пароля",
+    "defaultTitle": "Авторизация",
+    "tabTitle1": "Профиль",
+    "tabTitle2": "Мастера",
+    "tabTitle3": "Бронирование",
+    "error": "Ошибка",
+    "emptyField": "Пожалуйста, заполните все поля"
 }

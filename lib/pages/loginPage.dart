@@ -1,22 +1,27 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Function() login;
+  final Function() logout;
   final Function(String) updateEmail;
   final Function(String) updatePassword;
+  final Function(BuildContext) navigateToRegisterPage;
 
   const LoginPage(
       {super.key,
       required this.login,
+      required this.logout,
       required this.updateEmail,
-      required this.updatePassword});
+      required this.updatePassword,
+      required this.navigateToRegisterPage});
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final bool _showPassword = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -27,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void toRegister() {}
 
   void forgotPass() {}
 
@@ -43,14 +47,13 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: constraints.maxWidth * 0.4,
                   height: constraints.maxHeight * 0.2,
                   padding: const EdgeInsets.all(32),
                   alignment: Alignment.centerLeft,
-                  child: const Text(
-                    'Witaj, zaloguj się!',
+                  child: Text(
+                    AppLocalizations.of(context)!.loginTitle,
                     textAlign: TextAlign.left,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -86,6 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                         style: const TextStyle(
                           color: Color.fromRGBO(17, 45, 48, 1),
                         ),
+                        onChanged: (value) {
+                          widget.updateEmail(value);
+                        },
                         decoration: const InputDecoration(
                           hintText: 'Poczta@gmail.com',
                           hintStyle: TextStyle(
@@ -104,10 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: Text('Hasło',
-                            style: TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(AppLocalizations.of(context)!.password,
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(17, 45, 48, 1),
@@ -118,6 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                           color: Color.fromRGBO(17, 45, 48, 1),
                         ),
                         obscureText: true,
+                        onChanged: (value) {
+                          widget.updatePassword(value);
+                        },
                         decoration: const InputDecoration(
                           hintText: '••••••',
                           hintStyle: TextStyle(
@@ -141,10 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           TextButton(
                             onPressed: () {},
-                            child: const Text(
-                              'Zapomniałeś hasła?',
+                            child: Text(
+                              AppLocalizations.of(context)!.forgotPassword,
                               textAlign: TextAlign.right,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(17, 45, 48, 1),
@@ -155,15 +164,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 32.0),
                       Padding(
-                        padding: EdgeInsets.all(0.0),
+                        padding: const EdgeInsets.all(0.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.login();
+                          },
                           style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity,80.0),
+                            minimumSize: const Size(double.infinity, 80.0),
                           ),
-                          child: const Text(
-                            'Zaloguj się',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.loginButton,
+                            style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -172,29 +183,31 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 32.0),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                              'Nie masz konta?',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey,
-                              ),
+                            AppLocalizations.of(context)!.noAccount,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
                             ),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Zarejestruj się',
+                            onPressed: () {
+                              widget.navigateToRegisterPage(context);
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.registerButton,
                               textAlign: TextAlign.right,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(17, 45, 48, 1),

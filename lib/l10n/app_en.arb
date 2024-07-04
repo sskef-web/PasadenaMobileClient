@@ -1,5 +1,23 @@
 {
     "helloWorld": "Hello World!",
-    "selectLanguage": "Select Language",
-    "welcome": "Welcome"
+    "selectLanguage": "Change language",
+    "welcome": "Welcome",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "socialText": "Our social networks",
+    "loginTitle": "Hello, log in!",
+    "registerTitle": "Account creation",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Dont have an account?",
+    "haveAccount": "You already have an account?",
+    "name": "Name",
+    "surname": "Surname",
+    "confirmPassword": "Confirm password",
+    "defaultTitle": "Authorization",
+    "tabTitle1": "Profile",
+    "tabTitle2": "Workers",
+    "tabTitle3": "Booking",
+    "error": "Error",
+    "emptyField": "Please fill out all fields"
 }

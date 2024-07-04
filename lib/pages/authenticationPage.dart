@@ -3,12 +3,14 @@ import 'package:pasadena_mobile_client/data/loginresponse.dart';
 import 'package:pasadena_mobile_client/pages/homePage.dart';
 import 'package:pasadena_mobile_client/main.dart';
 import 'package:flutter/material.dart';
+import 'package:pasadena_mobile_client/pages/languageSelectionPage.dart';
 import 'package:pasadena_mobile_client/pages/loginPage.dart';
 import 'package:pasadena_mobile_client/pages/registerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthenticationPage extends StatefulWidget {
+
   const AuthenticationPage({super.key});
 
   @override
@@ -58,7 +60,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   Future<void> _changePassword(String email, String password) async {}
 
   Future<LoginResponse> login(String email, String password) async {
-    return LoginResponse(token, userId, refreshToken, 'Test');
+    return LoginResponse('31242423sgsd', '142', '1241', 'Test');
   }
 
   Future<LoginResponse> registrate(
@@ -66,10 +68,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       String password,
       String firstName,
       String lastName,
-      String avatarPath,
-      int clubId,
       String proofCode) async {
-    return LoginResponse(token, userId, refreshToken, 'Test');
+    return LoginResponse('31242423sgsd', '142', '1241', 'Test');
   }
 
   void changePassword() async {
@@ -79,12 +79,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   void _login() async {
     if (email == '' || password == '') {
-      /*showDialog(
+      showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Ошибка'),
-            content: const Text('Пожалуйста, заполните все поля'),
+            title: Text(AppLocalizations.of(context)!.error),
+            content: Text(AppLocalizations.of(context)!.emptyField),
             actions: [
               TextButton(
                 child: const Text('ОК'),
@@ -95,32 +95,32 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             ],
           );
         },
-      );*/
-    } else {
-      /*await login(email, password);
+      );
+    }
+    else {
+      await login(email, password);
       savedCookies = await loadCookies();
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);*/
-
+      await prefs.setBool('isLoggedIn', true);
+      Navigator.of(context).pop();
       setState(() {
-        appTitle = 'Профиль';
+        appTitle = AppLocalizations.of(context)!.tabTitle1;
         _isLoggedIn = true;
       });
     }
   }
 
   void _register() async {
-    /*Navigator.pop(context, true);
       await registrate(
-          email, password, firstName, lastName, avatarPath, clubId, proofCode);
+          email, password, firstName, lastName, avatarPath);
       savedCookies = await loadCookies();
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
-
+      Navigator.pop(context, true);
       setState(() {
         _isLoggedIn = true;
-      });*/
+      });
   }
 
   void _logout() async {
@@ -130,42 +130,42 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     email = '';
     password = '';
     setState(() {
-      appTitle = 'Авторизация';
+      appTitle = AppLocalizations.of(context)!.defaultTitle;
     });
   }
 
   void _updateEmail(String value) {
     setState(() {
       email = value;
-      print('NEW EMAIL: $email');
+      debugPrint('NEW EMAIL: $email');
     });
   }
 
   void _updatePassword(String value) {
     setState(() {
       password = value;
-      print('NEW PASS: $password');
+      debugPrint('NEW PASS: $password');
     });
   }
 
   void _updateFirstName(String value) {
     setState(() {
       firstName = value;
-      print('NEW FIRSTNAME: $firstName');
+      debugPrint('NEW FIRSTNAME: $firstName');
     });
   }
 
   void _updateProofCode(String value) {
     setState(() {
       proofCode = value;
-      print('NEW PROOFCODE: $proofCode');
+      debugPrint('NEW PROOFCODE: $proofCode');
     });
   }
 
   void _updateLastName(String value) {
     setState(() {
       lastName = value;
-      print('NEW LASTNAME: $lastName');
+      debugPrint('NEW LASTNAME: $lastName');
     });
   }
 
@@ -173,13 +173,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            LoginPage(
-              key: widget.key,
-              login: _login,
-              updateEmail: _updateEmail,
-              updatePassword:  _updatePassword,
-            ),
+        builder: (context) => LoginPage(
+          key: widget.key,
+          login: _login,
+          logout: _logout,
+          updateEmail: _updateEmail,
+          updatePassword: _updatePassword,
+          navigateToRegisterPage: navigateToRegisterPage,
+        ),
       ),
     );
   }
@@ -188,21 +189,21 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            RegisterPage(
-              key: widget.key,
-              login: _login,
-              updateEmail: _updateEmail,
-              updatePassword:  _updatePassword,
-            ),
+        builder: (context) => RegisterPage(
+          key: widget.key,
+          register: _register,
+          updateEmail: _updateEmail,
+          updatePassword: _updatePassword,
+          updateFirstname: _updateFirstName,
+          updateLastname: _updateLastName,
+          navigateToLoginPage: navigateToLoginPage,
+        ),
       ),
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     if (_isLoggedIn) {
       return HomePage(logoutCallback: _logout);
     } else {
@@ -236,7 +237,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         child: Text(
                           AppLocalizations.of(context)!.welcome,
                           textAlign: TextAlign.center,
-                          textScaler: TextScaler.linear(2.5),
+                          textScaler: const TextScaler.linear(2.5),
                         ),
                       ),
                       SizedBox(
@@ -249,10 +250,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           onPressed: () {
                             navigateToLoginPage(context);
                           },
-                          child: const Text(
-                            'Zaloguj się',
+                          child: Text(
+                            AppLocalizations.of(context)!.loginButton,
                             style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
+                                const TextStyle(fontSize: 20.0, color: Colors.white),
                           ),
                         ),
                       ),
@@ -266,69 +267,44 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             side: const BorderSide(color: Colors.white),
-                            foregroundColor: const Color.fromRGBO(17, 45, 48, 1),
+                            foregroundColor:
+                                const Color.fromRGBO(17, 45, 48, 1),
                           ),
                           onPressed: () {
                             navigateToRegisterPage(context);
                           },
-                          child: const Text(
-                            'Zarejestruj się',
-                            style: TextStyle(fontSize: 20.0),
+                          child: Text(
+                            AppLocalizations.of(context)!.registerButton,
+                            style: const TextStyle(fontSize: 20.0),
                           ),
                         ),
                       ),
                       const SizedBox(
                         height: 32.0,
                       ),
-                      TextButton(
+                      ElevatedButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(AppLocalizations.of(context)!.selectLanguage),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _changeLanguage('pl');
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('Polski'),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _changeLanguage('ru');
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('Russian'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const LanguageSelectionPage()),
                           );
                         },
-                        child: Text(AppLocalizations.of(context)!.selectLanguage),
+                        child: Text(
+                            AppLocalizations.of(context)!.selectLanguage),
                       ),
                       const SizedBox(
                         height: 16.0,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: double.infinity,
                         height: 40.0,
                         child: Text(
-                          'Nasze sieci społecznościowe',
+                          AppLocalizations.of(context)!.socialText,
                           textAlign: TextAlign.center,
-                          textScaler: TextScaler.linear(1.2),
+                          textScaler: const TextScaler.linear(1.2),
                         ),
                       ),
-                      
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -368,17 +344,4 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       );
     }
   }
-  void _changeLanguage(String languageCode) {
-    setState(() {
-      AppLocalizations.delegate.load(Locale(languageCode));
-    });
 }
-}
-/*
-      LoginPage(
-        key: widget.key,
-        login: _login,
-        updateEmail: _updateEmail,
-        updatePassword: _updatePassword,
-      );
-*/

@@ -1,5 +1,23 @@
 {
-    "helloWorld": "Hello World!",
+    "helloWorld": "Witaj świecie!",
     "selectLanguage": "Zmień język",
-    "welcome": "Witamy"
+    "welcome": "Witamy",
+    "loginButton": "Zaloguj się",
+    "registerButton": "Zarejestruj się",
+    "socialText": "Nasze sieci społecznościowe",
+    "loginTitle": "Witaj, zaloguj się!",
+    "registerTitle": "Utwórz swoje konto",
+    "password": "Hasło",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "noAccount": "Nie masz konta?",
+    "haveAccount": "Czy masz już konto?",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "confirmPassword": "Potwierdzenie hasła",
+    "defaultTitle": "Autoryzacja",
+    "tabTitle1": "Profil",
+    "tabTitle2": "Pracownicy",
+    "tabTitle3": "Rezerwacja",
+    "error": "Błąd",
+    "emptyField": "Wypełnij wszystkie pola"
 }
