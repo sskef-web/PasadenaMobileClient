@@ -267,8 +267,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             side: const BorderSide(color: Colors.white),
-                            foregroundColor:
-                                const Color.fromRGBO(17, 45, 48, 1),
+                            foregroundColor: Colors.transparent,
                           ),
                           onPressed: () {
                             navigateToRegisterPage(context);

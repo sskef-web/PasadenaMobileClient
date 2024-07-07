@@ -13,8 +13,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<LanguageProvider>(
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<LanguageProvider>(
         builder: (_, languageProvider, __) {
           return MaterialApp(
-            localizationsDelegates: [
+            localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -36,18 +36,35 @@ class MyApp extends StatelessWidget {
             title: appTitle,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color.fromRGBO(17, 45, 48, 1)),
+                seedColor: Colors.transparent,
+              ),
               useMaterial3: true,
               fontFamily: 'Exo2',
             ),
             darkTheme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color.fromRGBO(17, 45, 48, 1),
-                  brightness: Brightness.dark),
+                seedColor: Colors.transparent,
+                brightness: Brightness.dark,
+              ),
               useMaterial3: true,
               fontFamily: 'Exo2',
             ),
-            home: const AuthenticationPage(),
+            home: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(1, 17, 45, 48),
+                    Color.fromARGB(1, 17, 45, 48),
+                    Color.fromARGB(1, 4, 79, 75),
+                    Color.fromARGB(1, 1, 86, 81),
+                  ],
+                  stops: [0.03, 0.27, 0.86, 1],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              ),
+              child: const AuthenticationPage(),
+            ),
           );
         },
       ),

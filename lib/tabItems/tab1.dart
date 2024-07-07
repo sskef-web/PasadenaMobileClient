@@ -27,7 +27,6 @@ class _Tab1Page extends State<Tab1Page> {
           children: [
             Row(
               children: [
-                // Блок с именем и фамилией
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,12 +63,12 @@ class _Tab1Page extends State<Tab1Page> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.check_circle, color: Colors.green, size: 64.0),
+                            Icon(Icons.check_circle, color: Colors.green, size: 32.0),
                             SizedBox(width: 8.0),
                             Text(
                               'Статус заказа',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 12.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -93,7 +92,7 @@ class _Tab1Page extends State<Tab1Page> {
                         Row(
                           children: [
                             Text(
-                              'Фамилия и инициалы мастера',
+                              'Сидоров П.О',
                               style: TextStyle(
                                 fontSize: 16.0,
                               ),
@@ -121,7 +120,7 @@ class _Tab1Page extends State<Tab1Page> {
                 itemBuilder: (context, index) {
                   final order = orderHistory[index];
                   return ListTile(
-                    leading: Icon(order.statusIcon, size: 64.0, color: order.iconColor),
+                    leading: Icon(order.statusIcon, size: 44.0, color: order.iconColor),
                     title: Text(order.serviceName),
                     subtitle: Text(order.completionDate),
                     trailing: Text(order.masterName),
