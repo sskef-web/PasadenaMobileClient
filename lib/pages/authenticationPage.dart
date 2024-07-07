@@ -3,11 +3,12 @@ import 'package:pasadena_mobile_client/data/loginresponse.dart';
 import 'package:pasadena_mobile_client/pages/homePage.dart';
 import 'package:pasadena_mobile_client/main.dart';
 import 'package:flutter/material.dart';
-import 'package:pasadena_mobile_client/pages/languageSelectionPage.dart';
 import 'package:pasadena_mobile_client/pages/loginPage.dart';
 import 'package:pasadena_mobile_client/pages/registerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'languageSelectionButton.dart';
 
 class AuthenticationPage extends StatefulWidget {
 
@@ -208,16 +209,37 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       return HomePage(logoutCallback: _logout);
     } else {
       return Scaffold(
-        body: SafeArea(
+        body: Container (
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xff112d30),
+                Color(0xff112d30),
+                Color(0xff044f4b),
+                Color(0xff015651),
+              ],
+              stops: [0.03, 0.27, 0.86, 1],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        child: SafeArea(
           child: Column(
             children: [
+              const SizedBox(
+                height: 16.0,
+              ),
+              LanguageSelectionButton(),
+              const SizedBox(
+                height: 16.0,
+              ),
               Expanded(
                 flex: 2,
                 child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(16.0),
                   child: Transform.scale(
-                    scale: 0.8,
+                    scale: 0.6,
                     child: Image.asset(
                       'assets/images/pasadenaLogo.png',
                     ),
@@ -234,26 +256,19 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       SizedBox(
                         width: double.infinity,
                         height: 60.0,
-                        child: Text(
-                          AppLocalizations.of(context)!.welcome,
-                          textAlign: TextAlign.center,
-                          textScaler: const TextScaler.linear(2.5),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 60.0,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
                             side: const BorderSide(color: Colors.white),
+                            foregroundColor:
+                            const Color.fromRGBO(17, 45, 48, 1),
                           ),
                           onPressed: () {
                             navigateToLoginPage(context);
                           },
                           child: Text(
                             AppLocalizations.of(context)!.loginButton,
-                            style:
-                                const TextStyle(fontSize: 20.0, color: Colors.white),
+                            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -263,37 +278,22 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       SizedBox(
                         width: double.infinity,
                         height: 60.0,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.white),
-                            foregroundColor: Colors.transparent,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            side: const BorderSide(color: Color.fromRGBO(255, 215, 0, 1.0)),
                           ),
                           onPressed: () {
                             navigateToRegisterPage(context);
                           },
                           child: Text(
                             AppLocalizations.of(context)!.registerButton,
-                            style: const TextStyle(fontSize: 20.0),
+                            style:
+                                const TextStyle(fontSize: 20.0, color: Color.fromRGBO(255, 215, 0, 1.0), fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
                       const SizedBox(
                         height: 32.0,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const LanguageSelectionPage()),
-                          );
-                        },
-                        child: Text(
-                            AppLocalizations.of(context)!.selectLanguage),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
                       ),
                       SizedBox(
                         width: double.infinity,
@@ -301,7 +301,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         child: Text(
                           AppLocalizations.of(context)!.socialText,
                           textAlign: TextAlign.center,
-                          textScaler: const TextScaler.linear(1.2),
+                          textScaler: const TextScaler.linear(1.1),
+                          style: const TextStyle (fontWeight: FontWeight.w100),
                         ),
                       ),
                       Row(
@@ -310,25 +311,25 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              // Добавьте здесь код для обработки нажатия на иконку Facebook
+
                             },
                             child: const CircleAvatar(
                               backgroundColor: Colors.white,
                               child: Icon(
                                 Icons.facebook_outlined,
-                                color: Color.fromRGBO(17, 45, 48, 1),
+                                color: Color.fromRGBO(5, 76, 73, 1.0),
                               ),
                             ),
                           ),
                           const SizedBox(width: 16.0),
                           InkWell(
                             onTap: () {
-                              // Добавьте здесь код для обработки нажатия на иконку Instagram
+
                             },
                             child: const CircleAvatar(
                               backgroundColor: Colors.white,
                               child: Icon(FontAwesomeIcons.instagram,
-                                  color: Color.fromRGBO(17, 45, 48, 1)),
+                                  color: Color.fromRGBO(5, 76, 73, 1.0)),
                             ),
                           ),
                         ],
@@ -339,6 +340,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ),
             ],
           ),
+        ),
         ),
       );
     }

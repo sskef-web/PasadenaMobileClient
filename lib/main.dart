@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-String appTitle = "Авторизация";
+String appTitle = "";
 String baseURL = 'https://sskef.site/api/';
 
 void main() {
@@ -35,36 +35,17 @@ class MyApp extends StatelessWidget {
             locale: languageProvider.locale,
             title: appTitle,
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.transparent,
-              ),
               useMaterial3: true,
               fontFamily: 'Exo2',
             ),
             darkTheme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.transparent,
-                brightness: Brightness.dark,
+                brightness: Brightness.dark, seedColor: Colors.transparent,
               ),
               useMaterial3: true,
               fontFamily: 'Exo2',
             ),
-            home: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(1, 17, 45, 48),
-                    Color.fromARGB(1, 17, 45, 48),
-                    Color.fromARGB(1, 4, 79, 75),
-                    Color.fromARGB(1, 1, 86, 81),
-                  ],
-                  stops: [0.03, 0.27, 0.86, 1],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
-              ),
-              child: const AuthenticationPage(),
-            ),
+            home: const AuthenticationPage(),
           );
         },
       ),
