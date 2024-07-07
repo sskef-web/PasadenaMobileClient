@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pasadena_mobile_client/data/language_provider.dart';
 import 'package:provider/provider.dart';
 
 class LanguageSelectionButton extends StatefulWidget {
-  const LanguageSelectionButton({Key? key}) : super(key: key);
+  const LanguageSelectionButton({super.key});
 
   @override
   _LanguageSelectionButtonState createState() => _LanguageSelectionButtonState();
@@ -57,33 +56,33 @@ class _LanguageSelectionButtonState extends State<LanguageSelectionButton> {
               });
               languageProvider.changeLanguage(newValue!);
             },
-            items: [
+            items: const [
               DropdownMenuItem<Locale>(
-                value: const Locale('ru'),
+                value: Locale('ru'),
                 child: Text(
                   'RU',
                   style: TextStyle(
-                    color: const Color.fromRGBO(255, 215, 0, 1.0),
+                    color: Color.fromRGBO(255, 215, 0, 1.0),
                     fontSize: 16.0,
                   ),
                 ),
               ),
               DropdownMenuItem<Locale>(
-                value: const Locale('pl'),
+                value: Locale('pl'),
                 child: Text(
                   'PL',
                   style: TextStyle(
-                    color: const Color.fromRGBO(255, 215, 0, 1.0),
+                    color: Color.fromRGBO(255, 215, 0, 1.0),
                     fontSize: 16.0,
                   ),
                 ),
               ),
               DropdownMenuItem<Locale>(
-                value: const Locale('en'),
+                value: Locale('en'),
                 child: Text(
                   'EN',
                   style: TextStyle(
-                    color: const Color.fromRGBO(255, 215, 0, 1.0),
+                    color: Color.fromRGBO(255, 215, 0, 1.0),
                     fontSize: 16.0,
                   ),
                 ),
@@ -91,42 +90,42 @@ class _LanguageSelectionButtonState extends State<LanguageSelectionButton> {
             ],
             hint: Text(
               _nowLocale,
-              style: TextStyle(
-                color: const Color.fromRGBO(255, 215, 0, 1.0),
+              style: const TextStyle(
+                color: Color.fromRGBO(255, 215, 0, 1.0),
                 fontSize: 16.0,
               ),
             ),
             isExpanded: false,
-            underline: SizedBox(), // Убираем нижнее подчеркивание
-            style: TextStyle(fontSize: 16.0),
+            underline: const SizedBox(), // Убираем нижнее подчеркивание
+            style: const TextStyle(fontSize: 16.0),
             selectedItemBuilder: (BuildContext context) {
               return [
-                DropdownMenuItem<Locale>(
-                  value: const Locale('ru'),
+                const DropdownMenuItem<Locale>(
+                  value: Locale('ru'),
                   child: Text(
                     'RU',
                     style: TextStyle(
-                      color: const Color.fromRGBO(255, 215, 0, 1.0),
+                      color: Color.fromRGBO(255, 215, 0, 1.0),
                       fontSize: 16.0,
                     ),
                   ),
                 ),
-                DropdownMenuItem<Locale>(
-                  value: const Locale('pl'),
+                const DropdownMenuItem<Locale>(
+                  value: Locale('pl'),
                   child: Text(
                     'PL',
                     style: TextStyle(
-                      color: const Color.fromRGBO(255, 215, 0, 1.0),
+                      color: Color.fromRGBO(255, 215, 0, 1.0),
                       fontSize: 16.0,
                     ),
                   ),
                 ),
-                DropdownMenuItem<Locale>(
-                  value: const Locale('en'),
+                const DropdownMenuItem<Locale>(
+                  value: Locale('en'),
                   child: Text(
                     'EN',
                     style: TextStyle(
-                      color: const Color.fromRGBO(255, 215, 0, 1.0),
+                      color: Color.fromRGBO(255, 215, 0, 1.0),
                       fontSize: 16.0,
                     ),
                   ),

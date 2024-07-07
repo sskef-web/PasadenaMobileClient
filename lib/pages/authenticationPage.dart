@@ -180,7 +180,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           logout: _logout,
           updateEmail: _updateEmail,
           updatePassword: _updatePassword,
+          updateProofCode: _updateProofCode,
           navigateToRegisterPage: navigateToRegisterPage,
+          proofCode: proofCode,
         ),
       ),
     );
@@ -229,7 +231,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               const SizedBox(
                 height: 16.0,
               ),
-              LanguageSelectionButton(),
+              const LanguageSelectionButton(),
               const SizedBox(
                 height: 16.0,
               ),

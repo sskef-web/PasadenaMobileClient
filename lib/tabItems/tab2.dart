@@ -15,7 +15,7 @@ class Tab2Page extends StatefulWidget {
 
 class _Tab2Page extends State<Tab2Page> {
 
-  List<Employee> _employees = [
+  final List<Employee> _employees = [
     Employee(
       photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvFBa3G11OUBYADP7ouSBgwiiRzSYorF4dfg&s',
       firstName: 'Grzegorz',
@@ -46,8 +46,8 @@ class _Tab2Page extends State<Tab2Page> {
     // Добавьте остальных сотрудников
   ];
 
-  bool _sortByDate = false;
-  bool _sortByProcedureType = false;
+  final bool _sortByDate = false;
+  final bool _sortByProcedureType = false;
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _Tab2Page extends State<Tab2Page> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Сотрудники'),
+        title: const Text('Сотрудники'),
       ),
       body: ListView.builder(
         itemCount: _employees.length,

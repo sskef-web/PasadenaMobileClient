@@ -10,6 +10,7 @@
     "password": "Password",
     "forgotPassword": "Forgot password?",
     "noAccount": "Dont have an account?",
+    "noAccountText": "Registrate!",
     "haveAccount": "You already have an account?",
     "name": "Name",
     "surname": "Surname",
@@ -19,5 +20,12 @@
     "tabTitle2": "Workers",
     "tabTitle3": "Booking",
     "error": "Error",
-    "emptyField": "Please fill out all fields"
+    "emptyField": "Please fill out all fields",
+    "sendCode": "Send code",
+    "codeAbout": "An email with a password recovery code will be sent to your mailbox. Please make sure your mail is correct:",
+    "errorCode": "Wrong code, please, try again.",
+    "emailConfirm": "Confirmation of e-mail address",
+    "codeSent": "You have been sent a code to Email",
+    "send": "Send",
+    "recoveryPass": "Password recovery"
 }

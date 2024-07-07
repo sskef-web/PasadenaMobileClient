@@ -10,6 +10,7 @@
     "password": "Hasło",
     "forgotPassword": "Zapomniałeś hasła?",
     "noAccount": "Nie masz konta?",
+    "noAccountText": "Rejestracja!",
     "haveAccount": "Czy masz już konto?",
     "name": "Imię",
     "surname": "Nazwisko",
@@ -19,5 +20,12 @@
     "tabTitle2": "Pracownicy",
     "tabTitle3": "Rezerwacja",
     "error": "Błąd",
-    "emptyField": "Wypełnij wszystkie pola"
+    "emptyField": "Wypełnij wszystkie pola",
+    "sendCode": "Wyślij kod",
+    "codeAbout": "Wiadomość e-mail z kodem odzyskiwania hasła zostanie wysłana na skrzynkę pocztową. Upewnij się, że Twój adres e-mail jest poprawny:",
+    "errorCode": "Nieprawidłowy kod, spróbuj ponownie.",
+    "emailConfirm": "Potwierdzenie adresu e-mail",
+    "codeSent": "Otrzymałeś kod na adres e-mail",
+    "send": "Wyślij",
+    "recoveryPass": "Odzyskiwanie hasła"
 }

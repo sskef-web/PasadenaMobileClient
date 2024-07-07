@@ -2,9 +2,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'forgotPassPage.dart';
+import '../items/fourDigitCodeInput.dart';
+import 'loginPage.dart';
+import 'resetPasswordPage.dart';
 
-class LoginPage extends StatefulWidget {
+class ForgotPassPage extends StatefulWidget {
   final Function() login;
   final Function() logout;
   final Function(String) updateEmail;
@@ -13,7 +15,7 @@ class LoginPage extends StatefulWidget {
   final Function(BuildContext) navigateToRegisterPage;
   String proofCode;
 
-  LoginPage(
+  ForgotPassPage(
       {
         super.key,
         required this.login,
@@ -26,15 +28,16 @@ class LoginPage extends StatefulWidget {
       });
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ForgotPassPage createState() => _ForgotPassPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ForgotPassPage extends State<ForgotPassPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isEmailValid = false;
   bool isPasswordValid = false;
   bool isPasswordVisible = false;
+  String email = "";
 
   @override
   void dispose() {
@@ -43,33 +46,106 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void forgotPass() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ForgotPassPage(
-            key: widget.key,
-            login: widget.login,
-            logout: widget.logout,
-            updateEmail: widget.updateEmail,
-            updatePassword: widget.updatePassword,
-            updateProofCode: widget.updateProofCode,
-            navigateToRegisterPage: widget.navigateToRegisterPage,
-            proofCode: widget.proofCode,
-          ),
+  void navigateToLoginPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(
+          key: widget.key,
+          login: widget.login,
+          logout: widget.logout,
+          updateEmail: widget.updateEmail,
+          updateProofCode: widget.updateProofCode,
+          updatePassword: widget.updatePassword,
+          proofCode: widget.proofCode,
+          navigateToRegisterPage: widget.navigateToRegisterPage,
         ),
-      );
+      ),
+    );
+  }
+
+  void navigateToResetPasswordPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResetPasswordPage(
+          key: widget.key,
+          login: widget.login,
+          logout: widget.logout,
+          updateEmail: widget.updateEmail,
+          updateProofCode: widget.updateProofCode,
+          updatePassword: widget.updatePassword,
+          proofCode: widget.proofCode,
+          navigateToRegisterPage: widget.navigateToRegisterPage,
+        ),
+      ),
+    );
   }
 
   bool validateEmail(String email) {
     return EmailValidator.validate(email);
   }
 
-  bool validatePassword(String password) {
-    if (password.length >= 6) {
-      return true;
-    }
-    return false;
+  void sendProofCode() {
+    showProofCodeDialog(context, email);
+  }
+
+  void showProofCodeDialog(BuildContext context, String email) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xff112d30),
+                  Color(0xff112d30),
+                  Color(0xff044f4b),
+                  Color(0xff015651),
+                ],
+                stops: [0.03, 0.27, 0.86, 1],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ), borderRadius: BorderRadius.circular(10.0),
+            ),
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text (AppLocalizations.of(context)!.emailConfirm, textAlign: TextAlign.center, textScaler: const TextScaler.linear(1.2)),
+                Text ('${AppLocalizations.of(context)!.codeSent} - \n$email', textAlign: TextAlign.center,),
+                const SizedBox(height: 16.0),
+                FourDigitCodeInput(updateProofCode: widget.updateProofCode),
+                const SizedBox(height: 16.0,),
+                ElevatedButton(
+                  onPressed: widget.proofCode == 4
+                      ? () { navigateToResetPasswordPage(context); debugPrint("true ==========!"); } : () {
+                    Navigator.of(dialogContext).pop();
+                    Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Text(AppLocalizations.of(context)!.errorCode),
+                    );
+                    debugPrint("false ==========!");
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
+                    foregroundColor: Colors.white
+                  ),
+                  child: Text(AppLocalizations.of(context)!.send),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -126,6 +202,19 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Text (
+                            AppLocalizations.of(context)!.codeAbout,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w100,
+                              color: Color.fromRGBO(168, 168, 168, 1)
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      const SizedBox(height: 64.0),
                         const Padding(
                           padding: EdgeInsets.only(bottom: 8.0),
                           child: Text(
@@ -144,9 +233,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onChanged: (value) {
                             widget.updateEmail(value);
-                            // Проверка валидности почты
                             bool isValid = validateEmail(value);
                             setState(() {
+                              email = value;
                               isEmailValid = isValid;
                             });
                           },
@@ -162,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ) : const UnderlineInputBorder(
                               borderSide: BorderSide(
-                              color: Color.fromRGBO(173, 0, 0, 1),
+                                color: Color.fromRGBO(173, 0, 0, 1),
                               ),
                             ),
                             focusedBorder: isEmailValid ? const UnderlineInputBorder(
@@ -171,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ) : const UnderlineInputBorder(
                               borderSide: BorderSide(
-                              color: Color.fromRGBO(173, 0, 0, 1),
+                                color: Color.fromRGBO(173, 0, 0, 1),
                               ),
                             ),
                             suffixIcon: isEmailValid
@@ -185,107 +274,26 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16.0),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(AppLocalizations.of(context)!.password,
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(17, 45, 48, 1),
-                              )),
-                        ),
-                        TextFormField(
-                          style: const TextStyle(
-                            color: Color.fromRGBO(17, 45, 48, 1),
-                          ),
-                          obscureText: !isPasswordVisible,
-                          onChanged: (value) {
-                            widget.updatePassword(value);
-                            bool isValid = validatePassword(value);
-                            setState(() {
-                              isPasswordValid = isValid;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            hintText: '••••••',
-                            hintStyle: const TextStyle(
-                              fontWeight: FontWeight.w100,
-                              color: Colors.grey,
-                            ),
-                            enabledBorder: isPasswordValid ? const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(1, 86, 81, 1),
-                              ),
-                            ) : const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(173, 0, 0, 1),
-                              ),
-                            ),
-                            focusedBorder: isPasswordValid ? const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(1, 86, 81, 1),
-                              ),
-                            ) : const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(173, 0, 0, 1),
-                              ),
-                            ),
-                            suffixIcon: isPasswordValid
-                                ? IconButton(
-                              icon: Icon(
-                                isPasswordVisible ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                                color: const Color.fromRGBO(1, 86, 81, 1),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isPasswordVisible = !isPasswordVisible;
-                                });
-                              },
-                            )
-                                : const Icon(
-                              Icons.clear,
-                              color: Color.fromRGBO(173, 0, 0, 1),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                forgotPass();
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.forgotPassword,
-                                textAlign: TextAlign.right,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w100,
-                                  color: Color.fromRGBO(17, 45, 48, 1),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 32.0),
+                        const SizedBox(height: 128.0),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              widget.login();
+                            onPressed:() {
+                              isEmailValid ? sendProofCode() : null;
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
+                              backgroundColor: isEmailValid
+                                  ? const Color.fromRGBO(1, 86, 81, 1)
+                                  : const Color.fromRGBO(
+                                  127, 127, 127, 0.5),
                               minimumSize: const Size(double.infinity, 70.0),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.loginButton,
-                              style: const TextStyle(
+                              AppLocalizations.of(context)!.sendCode,
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: isEmailValid ? Colors.white : Colors.white,
                               ),
                             ),
                           ),
@@ -295,7 +303,7 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.noAccount,
+                              AppLocalizations.of(context)!.haveAccount,
                               textAlign: TextAlign.right,
                               style: const TextStyle(
                                 fontSize: 20.0,
@@ -315,10 +323,10 @@ class _LoginPageState extends State<LoginPage> {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               onPressed: () {
-                                widget.navigateToRegisterPage(context);
+                                navigateToLoginPage(context);
                               },
                               child: Text(
-                                AppLocalizations.of(context)!.noAccountText,
+                                "${AppLocalizations.of(context)!.loginButton}!",
                                 textAlign: TextAlign.right,
                                 style: const TextStyle(
                                   fontSize: 20.0,
