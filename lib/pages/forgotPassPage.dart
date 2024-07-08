@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../items/fourDigitCodeInput.dart';
+import '../components/fourDigitCodeInput.dart';
 import 'loginPage.dart';
 import 'resetPasswordPage.dart';
 
@@ -38,12 +38,21 @@ class _ForgotPassPage extends State<ForgotPassPage> {
   bool isPasswordValid = false;
   bool isPasswordVisible = false;
   String email = "";
+  String proofCode = "";
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void updateProofCode(String code) {
+    setState(() {
+      proofCode = code;
+      widget.updateProofCode(proofCode);
+      debugPrint('NEW PROOFCODE(NOT WIDGET) = ${proofCode}');
+    });
   }
 
   void navigateToLoginPage(BuildContext context) {
@@ -120,19 +129,28 @@ class _ForgotPassPage extends State<ForgotPassPage> {
                 Text (AppLocalizations.of(context)!.emailConfirm, textAlign: TextAlign.center, textScaler: const TextScaler.linear(1.2)),
                 Text ('${AppLocalizations.of(context)!.codeSent} - \n$email', textAlign: TextAlign.center,),
                 const SizedBox(height: 16.0),
-                FourDigitCodeInput(updateProofCode: widget.updateProofCode),
+                FourDigitCodeInput(updateProofCode: updateProofCode),
                 const SizedBox(height: 16.0,),
                 ElevatedButton(
-                  onPressed: widget.proofCode == 4
-                      ? () { navigateToResetPasswordPage(context); debugPrint("true ==========!"); } : () {
-                    Navigator.of(dialogContext).pop();
-                    Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: Text(AppLocalizations.of(context)!.errorCode),
-                    );
-                    debugPrint("false ==========!");
+                  onPressed: () {
+                    setState(() {
+                      if (proofCode.length == 4)
+                      {
+                        navigateToResetPasswordPage(context);
+                        debugPrint("true ==========!");
+                      }
+                      else
+                      {
+                        Navigator.of(dialogContext).pop();
+                        Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Text(AppLocalizations.of(context)!.errorCode),
+                        );
+                        debugPrint("false ==========!");
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
@@ -185,6 +203,7 @@ class _ForgotPassPage extends State<ForgotPassPage> {
                       style: const TextStyle(
                         fontSize: 32.0,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                   ),

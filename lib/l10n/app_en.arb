@@ -12,8 +12,7 @@
     "noAccount": "Dont have an account?",
     "noAccountText": "Registrate!",
     "haveAccount": "You already have an account?",
-    "name": "Name",
-    "surname": "Surname",
+    "nameSurname": "Name Surname",
     "confirmPassword": "Confirm password",
     "defaultTitle": "Authorization",
     "tabTitle1": "Profile",
@@ -27,5 +26,6 @@
     "emailConfirm": "Confirmation of e-mail address",
     "codeSent": "You have been sent a code to Email",
     "send": "Send",
-    "recoveryPass": "Password recovery"
+    "recoveryPass": "Password recovery",
+    "recoveryPassAbout": "Please, write new password!"
 }

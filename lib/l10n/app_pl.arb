@@ -12,8 +12,7 @@
     "noAccount": "Nie masz konta?",
     "noAccountText": "Rejestracja!",
     "haveAccount": "Czy masz już konto?",
-    "name": "Imię",
-    "surname": "Nazwisko",
+    "nameSurname": "Imię Nazwisko",
     "confirmPassword": "Potwierdzenie hasła",
     "defaultTitle": "Autoryzacja",
     "tabTitle1": "Profil",
@@ -27,5 +26,6 @@
     "emailConfirm": "Potwierdzenie adresu e-mail",
     "codeSent": "Otrzymałeś kod na adres e-mail",
     "send": "Wyślij",
-    "recoveryPass": "Odzyskiwanie hasła"
+    "recoveryPass": "Odzyskiwanie hasła",
+    "recoveryPassAbout": "Podaj nowe hasło!"
 }

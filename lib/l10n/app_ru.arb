@@ -12,8 +12,7 @@
     "noAccount": "Нет аккаунта?",
     "noAccountText": "Регистрация!",
     "haveAccount": "Уже есть аккаунт?",
-    "name": "Имя",
-    "surname": "Фамилия",
+    "nameSurname": "Имя Фамилия",
     "confirmPassword": "Подтверждение пароля",
     "defaultTitle": "Авторизация",
     "tabTitle1": "Профиль",
@@ -27,5 +26,6 @@
     "emailConfirm": "Подтверждение адреса электронной почты",
     "codeSent": "Вам был отправлен код на Email",
     "send": "Отправить",
-    "recoveryPass": "Восстановление пароля"
+    "recoveryPass": "Восстановление пароля",
+    "recoveryPassAbout": "Пожалуйста, придумайте новый пароль!"
 }

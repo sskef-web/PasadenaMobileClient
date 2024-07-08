@@ -29,18 +29,29 @@ class ResetPasswordPage extends StatefulWidget {
 }
 
 class _ResetPasswordPage extends State<ResetPasswordPage> {
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool isEmailValid = false;
   bool isPasswordValid = false;
+  bool isConfirmedPasswordValid = false;
   bool isPasswordVisible = false;
-  String email = "";
+  bool isConfirmPasswordVisible = false;
+  bool isPasswordConfirmed = false;
+  String password = '';
 
   @override
   void dispose() {
-    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  bool validatePassword(String password) {
+    if (password.length >= 6) {
+      return true;
+    }
+    return false;
+  }
+
+  void changePassword() {
+    navigateToLoginPage(context);
   }
 
   void navigateToLoginPage(BuildContext context) {
@@ -98,11 +109,12 @@ class _ResetPasswordPage extends State<ResetPasswordPage> {
                     padding: const EdgeInsets.all(32),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      AppLocalizations.of(context)!.loginTitle,
+                      AppLocalizations.of(context)!.recoveryPass,
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                         fontSize: 32.0,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                   ),
@@ -116,11 +128,213 @@ class _ResetPasswordPage extends State<ResetPasswordPage> {
                       ),
                     ),
                     padding: const EdgeInsets.all(32.0),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Text (
+                            AppLocalizations.of(context)!.recoveryPassAbout,
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w100,
+                                color: Color.fromRGBO(168, 168, 168, 1)
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(AppLocalizations.of(context)!.password,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(17, 45, 48, 1),
+                              )),
+                        ),
+                        TextFormField(
+                          style: const TextStyle(
+                            color: Color.fromRGBO(17, 45, 48, 1),
+                          ),
+                          obscureText: !isPasswordVisible,
+                          onChanged: (value) {
+                            widget.updatePassword(value);
+                            bool isValid = validatePassword(value);
+                            setState(() {
+                              password = value;
+                              isPasswordValid = isValid;
+                              //isPasswordConfirmed = password != value
+                              if (password == value) {
+                                isPasswordConfirmed = true;
+                              }
+                              else {
+                                isPasswordConfirmed = false;
+                              }
+                            });
+                          },
+                          decoration: InputDecoration(
+                            hintText: '••••••',
+                            hintStyle: const TextStyle(
+                              fontWeight: FontWeight.w100,
+                              color: Colors.grey,
+                            ),
+                            enabledBorder: isPasswordValid ? const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(1, 86, 81, 1),
+                              ),
+                            ) : const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(173, 0, 0, 1),
+                              ),
+                            ),
+                            focusedBorder: isPasswordValid ? const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(1, 86, 81, 1),
+                              ),
+                            ) : const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(173, 0, 0, 1),
+                              ),
+                            ),
+                            suffixIcon: isPasswordValid
+                                ? IconButton(
+                              icon: Icon(
+                                isPasswordVisible ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                                color: const Color.fromRGBO(1, 86, 81, 1),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isPasswordVisible = !isPasswordVisible;
+                                });
+                              },
+                            )
+                                : const Icon(
+                              Icons.clear,
+                              color: Color.fromRGBO(173, 0, 0, 1),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                              AppLocalizations.of(context)!.confirmPassword,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(17, 45, 48, 1),
+                              )),
+                        ),
+                        TextFormField(
+                          style: const TextStyle(
+                            color: Color.fromRGBO(17, 45, 48, 1),
+                          ),
+                          obscureText: !isConfirmPasswordVisible,
+                          onChanged: (value) {
+                            widget.updatePassword(value);
+                            setState(() {
+                              isConfirmedPasswordValid = password == value && validatePassword(value);
+                            });
+                          },
+                          decoration: InputDecoration(
+                            hintText: '••••••',
+                            hintStyle: const TextStyle(
+                              fontWeight: FontWeight.w100,
+                              color: Colors.grey,
+                            ),
+                            enabledBorder: isConfirmedPasswordValid && isPasswordConfirmed ? const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(1, 86, 81, 1),
+                              ),
+                            ) : const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(173, 0, 0, 1),
+                              ),
+                            ),
+                            focusedBorder: isConfirmedPasswordValid && isPasswordConfirmed ? const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(1, 86, 81, 1),
+                              ),
+                            ) : const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(173, 0, 0, 1),
+                              ),
+                            ),
+                            suffixIcon: isConfirmedPasswordValid && isPasswordConfirmed
+                                ? IconButton(
+                              icon: Icon(
+                                isConfirmPasswordVisible && isPasswordConfirmed ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                                color: const Color.fromRGBO(1, 86, 81, 1),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                                });
+                              },
+                            )
+                                : const Icon(
+                              Icons.clear,
+                              color: Color.fromRGBO(173, 0, 0, 1),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 32.0),
+                        Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              changePassword();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
+                              minimumSize: const Size(double.infinity, 70.0),
+                            ),
+                            child: Text(
+                              AppLocalizations.of(context)!.send,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.haveAccount,
+                              textAlign: TextAlign.right,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                navigateToLoginPage(context);
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.loginButton,
+                                textAlign: TextAlign.right,
+                                style: const TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(17, 45, 48, 1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

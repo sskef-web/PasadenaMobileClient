@@ -11,7 +11,7 @@ class LanguageSelectionButton extends StatefulWidget {
 
 class _LanguageSelectionButtonState extends State<LanguageSelectionButton> {
   Locale? selectedLocale;
-  String _nowLocale = 'PL';
+  String _nowLocale = 'RU';
 
   @override
   void dispose() {

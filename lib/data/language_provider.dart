@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LanguageProvider with ChangeNotifier {
-  Locale _locale = const Locale('pl');
+  Locale _locale = const Locale('ru');
 
   Locale get locale => _locale;
 

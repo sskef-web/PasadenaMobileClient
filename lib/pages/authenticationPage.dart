@@ -23,10 +23,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   String email = '';
   String password = '';
   String confirmPassword = '';
-  String firstName = '';
-  String lastName = '';
-  String avatarPath =
-      'StaticFiles/avatars/38c7301d-b794-44b4-935b-aeb70527b1a5.jpeg';
+  String nameSurname = '';
   var userId;
   var token;
   var refreshToken;
@@ -112,8 +109,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   void _register() async {
-      await registrate(
-          email, password, firstName, lastName, avatarPath);
+      //await registrate(email, password, firstName, lastName, avatarPath);
       savedCookies = await loadCookies();
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -149,10 +145,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     });
   }
 
-  void _updateFirstName(String value) {
+  void _updateNameSurname(String value) {
     setState(() {
-      firstName = value;
-      debugPrint('NEW FIRSTNAME: $firstName');
+      nameSurname = value;
+      debugPrint('NEW NAME_SURNAME: $nameSurname');
     });
   }
 
@@ -160,13 +156,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     setState(() {
       proofCode = value;
       debugPrint('NEW PROOFCODE: $proofCode');
-    });
-  }
-
-  void _updateLastName(String value) {
-    setState(() {
-      lastName = value;
-      debugPrint('NEW LASTNAME: $lastName');
     });
   }
 
@@ -197,8 +186,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           register: _register,
           updateEmail: _updateEmail,
           updatePassword: _updatePassword,
-          updateFirstname: _updateFirstName,
-          updateLastname: _updateLastName,
+          updateNameSurname: _updateNameSurname,
           navigateToLoginPage: navigateToLoginPage,
         ),
       ),

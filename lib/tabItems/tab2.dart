@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../components/employeeCard.dart';
 import '../data/employee.dart';
-import '../items/employeeCard.dart';
 
 
 class Tab2Page extends StatefulWidget {

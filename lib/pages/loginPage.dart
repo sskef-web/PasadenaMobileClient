@@ -109,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: const TextStyle(
                         fontSize: 32.0,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                   ),
@@ -144,7 +145,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onChanged: (value) {
                             widget.updateEmail(value);
-                            // Проверка валидности почты
                             bool isValid = validateEmail(value);
                             setState(() {
                               isEmailValid = isValid;
