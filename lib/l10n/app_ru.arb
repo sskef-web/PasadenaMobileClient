@@ -27,5 +27,10 @@
     "codeSent": "Вам был отправлен код на Email",
     "send": "Отправить",
     "recoveryPass": "Восстановление пароля",
-    "recoveryPassAbout": "Пожалуйста, придумайте новый пароль!"
+    "recoveryPassAbout": "Пожалуйста, придумайте новый пароль!",
+    "emailConfirmed": "Почта подтверждена",
+    "retry": "Повторить",
+    "continued": "Продолжить",
+    "passwordEmailError": "Почта или пароль указаны не верно",
+    "errorLogin": "Не удалось войти"
 }

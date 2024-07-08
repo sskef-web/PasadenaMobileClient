@@ -27,5 +27,10 @@
     "codeSent": "You have been sent a code to Email",
     "send": "Send",
     "recoveryPass": "Password recovery",
-    "recoveryPassAbout": "Please, write new password!"
+    "recoveryPassAbout": "Please, write new password!",
+    "emailConfirmed": "Email confirmed",
+    "retry": "Retry",
+    "continued": "Continue",
+    "passwordEmailError": "The email or password is not correct",
+    "errorLogin": "Couldn't get in"
 }

@@ -27,5 +27,10 @@
     "codeSent": "Otrzymałeś kod na adres e-mail",
     "send": "Wyślij",
     "recoveryPass": "Odzyskiwanie hasła",
-    "recoveryPassAbout": "Podaj nowe hasło!"
+    "recoveryPassAbout": "Podaj nowe hasło!",
+    "emailConfirmed": "Poczta potwierdzona.",
+    "retry": "Powtórzenie",
+    "continued": "Kontynuacja",
+    "passwordEmailError": "Adres e-mail lub hasło są nieprawidłowe",
+    "errorLogin": "Nie udało się wejść"
 }

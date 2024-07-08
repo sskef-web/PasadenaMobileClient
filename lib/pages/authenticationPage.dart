@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pasadena_mobile_client/data/loginresponse.dart';
 import 'package:pasadena_mobile_client/pages/homePage.dart';
@@ -45,6 +47,39 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     });
   }
 
+  String? extractTokenFromCookies(String cookies) {
+    var cookieList = cookies.split(';');
+    for (var cookie in cookieList) {
+      if (cookie.contains('X-Access-Token')) {
+        var token = cookie.split('=')[1];
+        return token;
+      }
+    }
+    return null;
+  }
+
+  String? extractRefreshTokenFromCookies(String cookies) {
+    var cookieList = cookies.split(';');
+    for (var cookie in cookieList) {
+      if (cookie.contains('X-Refresh-Token')) {
+        var token = cookie.split('=')[1];
+        return token;
+      }
+    }
+    return null;
+  }
+
+  String? extractUserIdFromCookies(String cookies) {
+    var cookieList = cookies.split(';');
+    for (var cookie in cookieList) {
+      if (cookie.contains('X-User-Id')) {
+        var userId = cookie.split('=')[1];
+        return userId;
+      }
+    }
+    return null;
+  }
+
   Future<void> saveCookies(String cookies) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('cookies', cookies);
@@ -55,24 +90,126 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     return prefs.getString('cookies');
   }
 
-  Future<void> _changePassword(String email, String password) async {}
+  Future<void> _changePassword(String email, String password) async {
+    var url = Uri.parse('${baseURL}auth/change_password');
+
+    var body = jsonEncode({
+      'emailAndProof': {
+        'emailAddress': email,
+        'proofCode': proofCode
+      },
+      'password': password
+    });
+    var response = await http.patch(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+    else {
+
+    }
+  }
+
 
   Future<LoginResponse> login(String email, String password) async {
-    return LoginResponse('31242423sgsd', '142', '1241', 'Test');
+    var url = Uri.parse('${baseURL}auth/login');
+    var body = jsonEncode({
+      'email': email,
+      'password': password,
+    });
+
+    var response = await http.post(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      var cookies = response.headers['set-cookie'];
+      await saveCookies(cookies!);
+      token = extractTokenFromCookies(cookies);
+      userId = extractUserIdFromCookies(cookies);
+      refreshToken = extractRefreshTokenFromCookies(cookies);
+      return LoginResponse(token, userId, refreshToken, response.body);
+    }
+    else
+    {
+      final responseJson = jsonDecode(response.body);
+      if (responseJson['title'] == 'Bad Request') {
+        throw showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.error),
+              content: Text(AppLocalizations.of(context)!.passwordEmailError),
+              actions: [
+                TextButton(
+                  child: Text(AppLocalizations.of(context)!.continued),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      else
+      {
+        String emailError = '${responseJson['errors']['Email']}';
+        String passError = '${responseJson['errors']['Password']}';
+        //throw Exception('Failed to login: ${response.statusCode}');
+        debugPrint(responseJson);
+        throw showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.error),
+              content: Text('${AppLocalizations.of(context)!.errorLogin}:\n$emailError\n$passError'),
+              actions: [
+                TextButton(
+                  child: Text(AppLocalizations.of(context)!.continued),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
   }
 
-  Future<LoginResponse> registrate(
-      String email,
-      String password,
-      String firstName,
-      String lastName,
-      String proofCode) async {
-    return LoginResponse('31242423sgsd', '142', '1241', 'Test');
-  }
+  Future<LoginResponse> registrate(String email, String password,
+      String firstName, String lastName, String proofCode) async {
+    var url = Uri.parse('${baseURL}auth/registration');
 
-  void changePassword() async {
-    debugPrint('EMAIL: $email | PASSWORD: $password');
-    _changePassword(email, password);
+    var body = jsonEncode({
+      'firstName': firstName,
+      'lastName': lastName,
+      'password': password,
+      'emailAndProof': {
+        'emailAddress': email,
+        'proofCode': proofCode
+      },
+      "phoneAndProof": null,
+      "avatarUrl": "https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
+    });
+    debugPrint('====== REG DATA ======\n$firstName\n$lastName\n$email\n$proofCode\n$password\n====== REG DATA ======');
+    var response = await http.post(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      var cookies = response.headers['set-cookie'];
+      await saveCookies(cookies!);
+      var token = extractTokenFromCookies(cookies);
+      var userId = extractUserIdFromCookies(cookies);
+      var refreshToken = extractRefreshTokenFromCookies(cookies);
+      return LoginResponse(token!, userId!, refreshToken!, response.body);
+    } else {
+      throw response.body;
+    }
   }
 
   void _login() async {
@@ -85,7 +222,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             content: Text(AppLocalizations.of(context)!.emptyField),
             actions: [
               TextButton(
-                child: const Text('ОК'),
+                child: Text(AppLocalizations.of(context)!.continued),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -95,30 +232,35 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         },
       );
     }
-    else {
+    else
+    {
       await login(email, password);
       savedCookies = await loadCookies();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
-      Navigator.of(context).pop();
       setState(() {
-        appTitle = AppLocalizations.of(context)!.tabTitle1;
         _isLoggedIn = true;
       });
+      Navigator.of(context).pop();
     }
   }
 
   void _register() async {
-      //await registrate(email, password, firstName, lastName, avatarPath);
-      savedCookies = await loadCookies();
+    String name = nameSurname.split(' ')[0];
+    String surname = nameSurname.split(' ')[1];
+    debugPrint('============ \n NAME = $name\n SURNAME = $surname\n ============');
+    Navigator.pop(context, true);
+    await registrate(email, password, name, surname, proofCode);
+    savedCookies = await loadCookies();
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      Navigator.pop(context, true);
-      setState(() {
-        _isLoggedIn = true;
-      });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+
+    setState(() {
+      _isLoggedIn = true;
+    });
   }
+
 
   void _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -187,7 +329,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           updateEmail: _updateEmail,
           updatePassword: _updatePassword,
           updateNameSurname: _updateNameSurname,
+          updateProofCode: _updateProofCode,
           navigateToLoginPage: navigateToLoginPage,
+          email: email,
+          proofCode: proofCode,
         ),
       ),
     );
