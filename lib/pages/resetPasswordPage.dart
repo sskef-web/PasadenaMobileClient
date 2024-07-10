@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../main.dart';
 import 'loginPage.dart';
 
 class ResetPasswordPage extends StatefulWidget {
@@ -11,6 +14,7 @@ class ResetPasswordPage extends StatefulWidget {
   final Function(String) updateProofCode;
   final Function(BuildContext) navigateToRegisterPage;
   String proofCode;
+  String email;
 
   ResetPasswordPage(
       {
@@ -21,7 +25,8 @@ class ResetPasswordPage extends StatefulWidget {
         required this.updatePassword,
         required this.updateProofCode,
         required this.navigateToRegisterPage,
-        required this.proofCode
+        required this.proofCode,
+        required this.email
       });
 
   @override
@@ -70,6 +75,29 @@ class _ResetPasswordPage extends State<ResetPasswordPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _changePassword(String email, String password) async {
+    var url = Uri.parse('${baseURL}auth/change_password');
+
+    var body = jsonEncode({
+      'emailAndProof': {
+        'email': email,
+        'proofCode': widget.proofCode
+      },
+      'password': password
+    });
+    var response = await http.patch(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+       debugPrint('${response.body}\n ${response.statusCode}');
+       navigateToLoginPage(context);
+    }
+    else {
+      debugPrint('${response.body}\n ${response.statusCode}');
+    }
   }
 
   bool validateEmail(String email) {
@@ -284,20 +312,23 @@ class _ResetPasswordPage extends State<ResetPasswordPage> {
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              changePassword();
+                            onPressed:() {
+                              isPasswordValid && isConfirmedPasswordValid ? _changePassword(widget.email, password) : null;
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
+                              backgroundColor: isPasswordValid && isConfirmedPasswordValid
+                                  ? const Color.fromRGBO(1, 86, 81, 1)
+                                  : const Color.fromRGBO(
+                                  127, 127, 127, 0.5),
                               minimumSize: const Size(double.infinity, 70.0),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.send,
-                              style: const TextStyle(
+                              AppLocalizations.of(context)!.sendCode,
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                                color: isPasswordValid && isConfirmedPasswordValid ? Colors.white : Colors.white,
+                              )
                             ),
                           ),
                         ),

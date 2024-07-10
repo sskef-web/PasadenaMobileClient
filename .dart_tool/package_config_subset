@@ -32,8 +32,8 @@ file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/cupertino_icons-1.
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/cupertino_icons-1.0.8/lib/
 dio
 2.18
-file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/dio-5.5.0/
-file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/dio-5.5.0/lib/
+file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/dio-5.5.0+1/
+file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/dio-5.5.0+1/lib/
 dio_web_adapter
 2.18
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/dio_web_adapter-1.0.1/
@@ -183,9 +183,9 @@ path_provider_platform_interface
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_platform_interface-2.1.2/
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_platform_interface-2.1.2/lib/
 path_provider_windows
-2.19
-file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_windows-2.2.1/
-file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_windows-2.2.1/lib/
+3.2
+file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_windows-2.3.0/
+file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_windows-2.3.0/lib/
 platform
 3.2
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.5/
@@ -270,10 +270,6 @@ web
 3.3
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.5.1/
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.5.1/lib/
-win32
-3.4
-file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.5.1/
-file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.5.1/lib/
 xdg_directories
 3.0
 file:///C:/Users/fedor/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.0.4/

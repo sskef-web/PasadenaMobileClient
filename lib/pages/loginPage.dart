@@ -273,20 +273,23 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              widget.login();
+                            onPressed:() {
+                              isPasswordValid && isEmailValid ? widget.login() : null;
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
+                              backgroundColor: isPasswordValid && isEmailValid
+                                  ? const Color.fromRGBO(1, 86, 81, 1)
+                                  : const Color.fromRGBO(
+                                  127, 127, 127, 0.5),
                               minimumSize: const Size(double.infinity, 70.0),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.loginButton,
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                                AppLocalizations.of(context)!.loginButton,
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: isPasswordValid && isEmailValid ? Colors.white : Colors.white,
+                                )
                             ),
                           ),
                         ),

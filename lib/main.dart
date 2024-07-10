@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-String appTitle = "";
 String baseURL = 'https://sskef.site/api/';
 
 void main() {
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
               Locale('en', '')  // Английский
             ],
             locale: languageProvider.locale,
-            title: appTitle,
             theme: ThemeData(
               useMaterial3: true,
               fontFamily: 'Exo2',

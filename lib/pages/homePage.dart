@@ -32,8 +32,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Center(child: Text(appTitle)),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         leading: SizedBox(
           width: 48.0,
           height: 48.0,
@@ -43,44 +45,43 @@ class _HomePageState extends State<HomePage> {
               angle: 3.14,
               child: const Icon(Icons.logout),
             ),
-            onPressed: widget.logoutCallback,
+            onPressed: () {
+              setState(() {
+                widget.logoutCallback();
+              });
+            },
           ),
         ),
       ),
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-          _currentIndex = index;
-          switch (_currentIndex) {
-            case 0:
-            appTitle = AppLocalizations.of(context)!.tabTitle1;
-            break;
-            case 1:
-            appTitle = AppLocalizations.of(context)!.tabTitle2;
-            break;
-            case 2:
-            appTitle = AppLocalizations.of(context)!.tabTitle3;
-            break;
-          }
-        });
-      },
-      items: [
+            _currentIndex = index;
+          });
+        },
+        selectedItemColor: const Color.fromRGBO(255, 215, 0, 1), // S
+        unselectedItemColor: const Color.fromRGBO(17, 45, 48, 1),// et the selected label color
+        items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person, color: Color.fromRGBO(17, 45, 48, 1)),
             label: AppLocalizations.of(context)!.tabTitle1,
+            activeIcon: const Icon(Icons.person, color: Color.fromRGBO(255, 215, 0, 1)),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.group),
+            icon: const Icon(Icons.group, color: Color.fromRGBO(17, 45, 48, 1)),
             label: AppLocalizations.of(context)!.tabTitle2,
+            activeIcon: const Icon(Icons.group, color: Color.fromRGBO(255, 215, 0, 1)),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.attach_money),
+            icon: const Icon(Icons.attach_money, color: Color.fromRGBO(17, 45, 48, 1)),
             label: AppLocalizations.of(context)!.tabTitle3,
+            activeIcon: const Icon(Icons.attach_money, color: Color.fromRGBO(255, 215, 0, 1)),
           ),
         ],
-      )
+      ),
     );
   }
 }

@@ -90,29 +90,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     return prefs.getString('cookies');
   }
 
-  Future<void> _changePassword(String email, String password) async {
-    var url = Uri.parse('${baseURL}auth/change_password');
-
-    var body = jsonEncode({
-      'emailAndProof': {
-        'emailAddress': email,
-        'proofCode': proofCode
-      },
-      'password': password
-    });
-    var response = await http.patch(url, body: body, headers: {
-      'Content-Type': 'application/json',
-    });
-
-    if (response.statusCode != 200) {
-      throw response.body;
-    }
-    else {
-
-    }
-  }
-
-
   Future<LoginResponse> login(String email, String password) async {
     var url = Uri.parse('${baseURL}auth/login');
     var body = jsonEncode({
@@ -268,9 +245,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     _isLoggedIn = false;
     email = '';
     password = '';
-    setState(() {
-      appTitle = AppLocalizations.of(context)!.defaultTitle;
-    });
   }
 
   void _updateEmail(String value) {

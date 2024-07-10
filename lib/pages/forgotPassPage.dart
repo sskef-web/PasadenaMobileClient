@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:http/http.dart' as http;
 import '../components/fourDigitCodeInput.dart';
+import '../main.dart';
 import 'loginPage.dart';
 import 'resetPasswordPage.dart';
 
@@ -84,8 +87,9 @@ class _ForgotPassPage extends State<ForgotPassPage> {
           updateEmail: widget.updateEmail,
           updateProofCode: widget.updateProofCode,
           updatePassword: widget.updatePassword,
-          proofCode: widget.proofCode,
+          proofCode: proofCode,
           navigateToRegisterPage: widget.navigateToRegisterPage,
+          email: email,
         ),
       ),
     );
@@ -95,11 +99,51 @@ class _ForgotPassPage extends State<ForgotPassPage> {
     return EmailValidator.validate(email);
   }
 
-  void sendProofCode() {
-    showProofCodeDialog(context, email);
+  void ProofCode() {
+    sendProofCode(email);
+    showProofCodeDialog(context);
   }
 
-  void showProofCodeDialog(BuildContext context, String email) async {
+  Future<void> sendProofCodeAndEmail(String email, String proofCode) async {
+    var url = Uri.parse('${baseURL}auth/validate_proof_code');
+
+    var body = jsonEncode({
+      'email': email,
+      'proofCode': int.parse(proofCode),
+    });
+
+    var response = await http.post(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      navigateToResetPasswordPage(context);
+    }
+    else {
+      throw response.body;
+    }
+  }
+
+  Future<void> sendProofCode(String email) async {
+    var url = Uri.parse('${baseURL}auth/send_proof_code');
+
+    var body = jsonEncode(
+      email,
+    );
+
+    var response = await http.post(url, body: body, headers: {
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      debugPrint('code send to $email');
+    }
+    else {
+      throw response.body;
+    }
+  }
+
+  void showProofCodeDialog(BuildContext context) async {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -136,7 +180,7 @@ class _ForgotPassPage extends State<ForgotPassPage> {
                     setState(() {
                       if (proofCode.length == 4)
                       {
-                        navigateToResetPasswordPage(context);
+                        sendProofCodeAndEmail(email, proofCode);
                         debugPrint("true ==========!");
                       }
                       else
@@ -298,7 +342,7 @@ class _ForgotPassPage extends State<ForgotPassPage> {
                           padding: const EdgeInsets.all(0.0),
                           child: ElevatedButton(
                             onPressed:() {
-                              isEmailValid ? sendProofCode() : null;
+                              isEmailValid ? ProofCode() : null;
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isEmailValid
