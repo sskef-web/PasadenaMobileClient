@@ -1,7 +1,11 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../components/orderBlock.dart';
+import '../data/order.dart';
 
 class Tab1Page extends StatefulWidget {
   void Function() logoutCallback;
@@ -16,11 +20,54 @@ class Tab1Page extends StatefulWidget {
 class _Tab1Page extends State<Tab1Page> {
   DateTime _selectedDateTime = DateTime.now();
   DateTime _nowDateTime = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
+  DateTime _focusDate = DateTime(2024);
+  List<DateTime> _focusDates = [];
+
+  List<Order> orders = [
+    Order(
+      headImageUrl: 'https://manikyurdizajn.ru/wp-content/uploads/2021/06/4.jpg',
+      employeeImageUrl: 'https://static9.depositphotos.com/1605416/1081/i/450/depositphotos_10819690-stock-photo-portrait-of-a-young-capybara.jpg',
+      title: 'Маникюр гибридный',
+      employeeName: 'КАПИБАРА',
+      dateTime: DateTime(2024, 07, 14, 10, 00),
+      reservationStatus: 1,
+    ),
+    Order(
+      headImageUrl: 'https://ash2o.ru/upload/iblock/319/319dddc459df2258ba456fd4d2ef7399.jpeg',
+      employeeImageUrl: 'https://i.pinimg.com/originals/3f/19/34/3f1934bd60a5726f31ca1930e392bb0f.jpg',
+      title: 'Маникюр гель-лак',
+      employeeName: 'ЕНОТ',
+      dateTime: DateTime(2024, 07, 14, 12, 00),
+      reservationStatus: 2,
+    ),
+    Order(
+      headImageUrl: 'https://s13.stc.all.kpcdn.net/woman/wp-content/uploads/2022/01/tild6231-3734-4637-b530-373964336131___71-960x540.jpg',
+      employeeImageUrl: 'https://sotni.ru/wp-content/uploads/2023/08/kudiabliki-belka-2.webp',
+      title: 'Маникюр с укреплением',
+      employeeName: 'БЕЛКА',
+      dateTime: DateTime(2024, 07, 15, 14, 00),
+      reservationStatus: 3,
+    ),
+  ];
+
+  void fillFocusDates() {
+    orders.forEach((order) {
+      _focusDates.add(DateTime(order.dateTime.year, order.dateTime.month, order.dateTime.day));
+      debugPrint('\n\n ==== ordersDateTime - ${order.dateTime} ==== _focusDates - ${_focusDates.last}');
+    });
+
+  }
 
   @override
   void initState() {
     super.initState();
     _nowDateTime = DateTime.now();
+    fillFocusDates();
+  }
+
+  bool isSameDate(DateTime date1, DateTime date2) {
+    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
   }
 
   void _logout() async {
@@ -28,9 +75,16 @@ class _Tab1Page extends State<Tab1Page> {
     await prefs.setBool('isLoggedIn', false);
     widget.logoutCallback();
   }
-  DateTime _focusDate = DateTime(2024);
 
   void editProfile() {}
+
+  List<Order> filterOrdersByDate(DateTime selectedDate) {
+    return orders.where((order) =>
+    order.dateTime.year == selectedDate.year &&
+        order.dateTime.month == selectedDate.month &&
+        order.dateTime.day == selectedDate.day).toList();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +121,7 @@ class _Tab1Page extends State<Tab1Page> {
         child: SafeArea(
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
+              List<Order> filteredOrders = orders.where((order) => isSameDate(order.dateTime, _selectedDateTime)).toList();
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +194,6 @@ class _Tab1Page extends State<Tab1Page> {
                               )
                           {
                             final dateFormat = DateFormat.yMMMM(Localizations.localeOf(context).languageCode);
-
                             return Container(
                               height: 50,
                               alignment: Alignment.center,
@@ -174,15 +228,20 @@ class _Tab1Page extends State<Tab1Page> {
                               ),
                             );
                           },
-                          selectionMode: const SelectionMode.autoCenter(),
+                          selectionMode: const SelectionMode.alwaysFirst(),
                           firstDate: DateTime(_selectedDateTime.year, _selectedDateTime.month, 1),
                           focusDate: _focusDate,
                           lastDate: DateTime(_selectedDateTime.year, _selectedDateTime.month, 31),
                           onDateChange: (selectedDate) {
                             setState(() {
                               _focusDate = selectedDate;
+                              _selectedDate = selectedDate;
+                              _selectedDateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day);
+                              filteredOrders = filterOrdersByDate(selectedDate);
                             });
                           },
+
+
                           dayProps: const EasyDayProps(
                             width: 64.0,
                             height: 96.0,
@@ -194,23 +253,21 @@ class _Tab1Page extends State<Tab1Page> {
                               VoidCallback onTap,
                               )
                           {
-                            debugPrint('\n\n\n ======================= builder ${date} ||| now ${_nowDateTime}  |||| focus ${_focusDates[1]} ================\n\n\n');
+                            //debugPrint('\n\n\n ======================= builder ${date} ||| now ${_nowDateTime}  |||| focus ${_focusDates[1]} ================\n\n\n');
                             return InkResponse(
                               onTap: onTap,
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: const Color.fromRGBO(232, 232, 232, 1),
                                   border:
-                                  isSelected | _focusDates.contains(date)
-                                      ? Border.all(color: Colors.transparent, width: 0.0,)
-                                      :
-                                  _nowDateTime.year == date.year && _nowDateTime.month == date.month && _nowDateTime.day == date.day
+                                  isSelected
                                       ? Border.all(
                                       color: const Color.fromRGBO(204, 204, 204, 1),
                                       width: 4.0,
                                       style: BorderStyle.solid,
                                       strokeAlign: BorderSide.strokeAlignInside
-                                  )
+                                  ) : _focusDates.contains(date)
+                                      ? Border.all(color: Colors.transparent, width: 0.0,)
                                       : Border.all(
                                       color: const Color.fromRGBO(204, 204, 204, 1),
                                       width: 2.0,
@@ -218,7 +275,8 @@ class _Tab1Page extends State<Tab1Page> {
                                       strokeAlign: BorderSide.strokeAlignInside
                                   ),
                                   borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  gradient: isSelected | _focusDates.contains(date) ? const LinearGradient(
+                                  gradient: _focusDates.contains(date)
+                                      ? const LinearGradient(
                                     colors: [
                                       Color.fromRGBO(17, 45, 48, 1),
                                       Color.fromRGBO(1, 86, 81, 1),
@@ -233,9 +291,15 @@ class _Tab1Page extends State<Tab1Page> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        EasyDateFormatter.shortDayName(date, Localizations.localeOf(context).languageCode).toUpperCase(),
+                                        EasyDateFormatter.shortDayName(
+                                            date, Localizations
+                                            .localeOf(context)
+                                            .languageCode)
+                                            .toUpperCase(),
                                         style: TextStyle(
-                                          color: isSelected | _focusDates.contains(date) ? Colors.white : const Color.fromRGBO(136, 136, 136, 1),
+                                          color: _focusDates.contains(date)
+                                              ? Colors.white
+                                              : const Color.fromRGBO(136, 136, 136, 1),
                                         ),
                                       ),
                                     ),
@@ -243,7 +307,9 @@ class _Tab1Page extends State<Tab1Page> {
                                       child: Text(
                                         date.day.toString(),
                                         style: TextStyle(
-                                          color: isSelected | _focusDates.contains(date) ? Colors.white : const Color.fromRGBO(1, 86, 81, 1),
+                                          color: _focusDates.contains(date)
+                                              ? Colors.white
+                                              : const Color.fromRGBO(1, 86, 81, 1),
                                           fontWeight: FontWeight.bold,
                                           fontSize: 21,
                                         ),
@@ -255,6 +321,39 @@ class _Tab1Page extends State<Tab1Page> {
                             );
                           },
                         ),
+                        const SizedBox(height: 16.0),
+                        Text(
+                          'СПИСОК БРОНИРОВАНИЯ',
+                          style: TextStyle(
+                            color: Color.fromRGBO(1, 86, 81, 1),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        filteredOrders == null ? Text(
+                            'СПИСОК БРОНИРОВАНИЯ',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 86, 81, 1),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16
+                            ))
+                        : Expanded(
+                          child: ListView.builder(
+                            itemCount: filteredOrders.length,
+                            itemBuilder: (context, index) {
+                              Order order = filteredOrders[index];
+                              return OrderBlock(
+                                headImageUrl: order.headImageUrl,
+                                employeeImageUrl: order.employeeImageUrl,
+                                title: order.title,
+                                employeeName: order.employeeName,
+                                selectedDateTime: order.dateTime,
+                                reservationStatus: order.reservationStatus,
+                              );
+                            },
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -266,10 +365,4 @@ class _Tab1Page extends State<Tab1Page> {
       ),
     );
   }
-
-  final List<DateTime> _focusDates = [
-    DateTime(2024, 7, 12, 0, 0, 0, 0),
-    DateTime(2024, 7, 13, 0, 0, 0, 0),
-    DateTime(2024, 7, 14, 0, 0, 0, 0),
-  ];
 }

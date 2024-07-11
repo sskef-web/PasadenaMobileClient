@@ -323,7 +323,7 @@ class _ResetPasswordPage extends State<ResetPasswordPage> {
                               minimumSize: const Size(double.infinity, 70.0),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.sendCode,
+                              AppLocalizations.of(context)!.continued,
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,

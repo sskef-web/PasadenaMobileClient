@@ -218,7 +218,15 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       setState(() {
         _isLoggedIn = true;
       });
-      Navigator.of(context).pop();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            logoutCallback: _logout,
+            isLoggedIn: _isLoggedIn
+          ),
+        ),
+      );
     }
   }
 
