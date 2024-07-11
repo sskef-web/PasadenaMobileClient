@@ -1,198 +1,275 @@
+import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Tab1Page extends StatefulWidget {
-  final Function() logoutCallback;
+  void Function() logoutCallback;
+  bool isLoggedIn;
 
-  const Tab1Page({super.key, required this.logoutCallback});
+  Tab1Page({super.key, required this.logoutCallback, required this.isLoggedIn});
 
   @override
   _Tab1Page createState() => _Tab1Page();
 }
 
 class _Tab1Page extends State<Tab1Page> {
+  DateTime _selectedDateTime = DateTime.now();
+  DateTime _nowDateTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    _nowDateTime = DateTime.now();
   }
+
+  void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    widget.logoutCallback();
+  }
+  DateTime _focusDate = DateTime(2024);
+
+  void editProfile() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: SizedBox(
+          width: 48.0,
+          height: 48.0,
+          child: IconButton(
+            iconSize: 32.0,
+            icon: Transform.rotate(
+              angle: 3.14,
+              child: const Icon(Icons.logout),
+            ),
+            onPressed: _logout,
+          ),
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xff112d30),
-              Color(0xff112d30),
-              Color(0xff044f4b),
-              Color(0xff015651),
+              Color.fromRGBO(17, 45, 48, 1),
+              Color.fromRGBO(1, 86, 81, 1),
             ],
-            stops: [0.03, 0.27, 0.86, 1],
+            stops: [0.0, 0.5],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Expanded(
+                  Container(
+                    height: constraints.maxHeight * 0.2,
+                    padding: const EdgeInsets.all(32),
+                    alignment: Alignment.bottomLeft,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Имя',
+                          'Профиль пользователя',
                           style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white),
                         ),
-                        Text(
-                          'Фамилия',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ИРИНА ИВАНОВА',
+                              style: TextStyle(
+                                  fontSize: 26.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Container(
+                              width: 42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                                border: Border.all(
+                                    color: Colors.white,
+                                    width: 2.0,
+                                    style: BorderStyle.solid,
+                                    strokeAlign: BorderSide.strokeAlignInside),
+                              ),
+                              child: IconButton(
+                                icon: const Icon(Icons.edit, color: Colors.white, size: 22),
+                                onPressed: editProfile,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 16.0),
-                  // Блок с информацией о последнем заказе
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
+                  Container(
+                    height: constraints.maxHeight * 0.8,
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(232, 232, 232, 1),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
                       ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.check_circle, color: Colors.green, size: 32.0),
-                              SizedBox(width: 8.0),
-                              Text(
-                                'Статус заказа',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
+                    ),
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        EasyInfiniteDateTimeLine(
+                          headerBuilder: (
+                              BuildContext context,
+                              DateTime date
+                              )
+                          {
+                            final dateFormat = DateFormat.yMMMM(Localizations.localeOf(context).languageCode);
+
+                            return Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_back_ios),
+                                    color: const Color.fromRGBO(136, 136, 136, 1),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedDateTime = DateTime(_selectedDateTime.year, _selectedDateTime.month - 1);
+                                        debugPrint(_selectedDateTime.toString());
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    dateFormat.format(_selectedDateTime),
+                                    style: const TextStyle(color: Color.fromRGBO(136, 136, 136, 1)),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_forward_ios),
+                                    color: const Color.fromRGBO(136, 136, 136, 1),
+                                    onPressed: () {
+                                      setState(() {
+                                        _selectedDateTime = DateTime(_selectedDateTime.year, _selectedDateTime.month + 1);
+                                        debugPrint('${_selectedDateTime.toString()} =================================');
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          selectionMode: const SelectionMode.autoCenter(),
+                          firstDate: DateTime(_selectedDateTime.year, _selectedDateTime.month, 1),
+                          focusDate: _focusDate,
+                          lastDate: DateTime(_selectedDateTime.year, _selectedDateTime.month, 31),
+                          onDateChange: (selectedDate) {
+                            setState(() {
+                              _focusDate = selectedDate;
+                            });
+                          },
+                          dayProps: const EasyDayProps(
+                            width: 64.0,
+                            height: 96.0,
+                          ),
+                          itemBuilder: (
+                              BuildContext context,
+                              DateTime date,
+                              bool isSelected,
+                              VoidCallback onTap,
+                              )
+                          {
+                            debugPrint('\n\n\n ======================= builder ${date} ||| now ${_nowDateTime}  |||| focus ${_focusDates[1]} ================\n\n\n');
+                            return InkResponse(
+                              onTap: onTap,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(232, 232, 232, 1),
+                                  border:
+                                  isSelected | _focusDates.contains(date)
+                                      ? Border.all(color: Colors.transparent, width: 0.0,)
+                                      :
+                                  _nowDateTime.year == date.year && _nowDateTime.month == date.month && _nowDateTime.day == date.day
+                                      ? Border.all(
+                                      color: const Color.fromRGBO(204, 204, 204, 1),
+                                      width: 4.0,
+                                      style: BorderStyle.solid,
+                                      strokeAlign: BorderSide.strokeAlignInside
+                                  )
+                                      : Border.all(
+                                      color: const Color.fromRGBO(204, 204, 204, 1),
+                                      width: 2.0,
+                                      style: BorderStyle.solid,
+                                      strokeAlign: BorderSide.strokeAlignInside
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  gradient: isSelected | _focusDates.contains(date) ? const LinearGradient(
+                                    colors: [
+                                      Color.fromRGBO(17, 45, 48, 1),
+                                      Color.fromRGBO(1, 86, 81, 1),
+                                    ],
+                                    stops: [0.0, 0.5],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ) : null,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        EasyDateFormatter.shortDayName(date, Localizations.localeOf(context).languageCode).toUpperCase(),
+                                        style: TextStyle(
+                                          color: isSelected | _focusDates.contains(date) ? Colors.white : const Color.fromRGBO(136, 136, 136, 1),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        date.day.toString(),
+                                        style: TextStyle(
+                                          color: isSelected | _focusDates.contains(date) ? Colors.white : const Color.fromRGBO(1, 86, 81, 1),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 21,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 8.0),
-                          Text(
-                            'Название услуги',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Text(
-                            'Дата выполнения',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Row(
-                            children: [
-                              Text(
-                                'Сидоров П.О',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 16.0),
-              const Text(
-                'История заказов',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: orderHistory.length,
-                  itemBuilder: (context, index) {
-                    final order = orderHistory[index];
-                    return ListTile(
-                      leading: Icon(order.statusIcon, size: 44.0, color: order.iconColor),
-                      title: Text(order.serviceName),
-                      subtitle: Text(order.completionDate),
-                      trailing: Text(order.masterName),
-                    );
-                  },
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
     );
   }
-}
-class Order {
-  final IconData statusIcon;
-  final String serviceName;
-  final String completionDate;
-  final String masterName;
-  final Color iconColor;
 
-  Order({
-    required this.statusIcon,
-    required this.serviceName,
-    required this.completionDate,
-    required this.masterName,
-    required this.iconColor
-  });
+  final List<DateTime> _focusDates = [
+    DateTime(2024, 7, 12, 0, 0, 0, 0),
+    DateTime(2024, 7, 13, 0, 0, 0, 0),
+    DateTime(2024, 7, 14, 0, 0, 0, 0),
+  ];
 }
-
-// Пример массива с тестовыми данными
-List<Order> orderHistory = [
-  Order(
-    statusIcon: Icons.check_circle,
-    iconColor: Colors.green,
-    serviceName: 'Услуга 1',
-    completionDate: '10 июля 2024',
-    masterName: 'Иванов И.И.',
-  ),
-  Order(
-    statusIcon: Icons.close,
-    iconColor: Colors.red,
-    serviceName: 'Услуга 2',
-    completionDate: '15 июля 2024',
-    masterName: 'Петров П.П.',
-  ),
-  Order(
-    statusIcon: Icons.priority_high,
-    iconColor: Colors.yellow,
-    serviceName: 'Услуга 3',
-    completionDate: '20 июля 2024',
-    masterName: 'Сидоров С.С.',
-  ),
-  Order(
-    statusIcon: Icons.question_mark,
-    iconColor: Colors.yellow,
-    serviceName: 'Услуга 4',
-    completionDate: '21 августа 2024',
-    masterName: 'Петров С.С.',
-  ),
-];

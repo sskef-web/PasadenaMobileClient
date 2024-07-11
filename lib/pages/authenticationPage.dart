@@ -238,15 +238,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     });
   }
 
-
-  void _logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    _isLoggedIn = false;
-    email = '';
-    password = '';
-  }
-
   void _updateEmail(String value) {
     setState(() {
       email = value;
@@ -312,10 +303,18 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     );
   }
 
+  void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    setState(() {
+      _isLoggedIn = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoggedIn) {
-      return HomePage(logoutCallback: _logout);
+      return HomePage(logoutCallback: _logout, isLoggedIn: _isLoggedIn,);
     } else {
       return Scaffold(
         body: Container (

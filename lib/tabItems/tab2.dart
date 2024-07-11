@@ -4,9 +4,8 @@ import '../data/employee.dart';
 
 
 class Tab2Page extends StatefulWidget {
-  final Function() logoutCallback;
 
-  const Tab2Page({super.key, required this.logoutCallback});
+  const Tab2Page({super.key});
 
   @override
   _Tab2Page createState() => _Tab2Page();
