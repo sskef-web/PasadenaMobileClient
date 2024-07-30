@@ -96,7 +96,7 @@ class _LanguageSelectionButtonState extends State<LanguageSelectionButton> {
               ),
             ),
             isExpanded: false,
-            underline: const SizedBox(), // Убираем нижнее подчеркивание
+            underline: const SizedBox(),
             style: const TextStyle(fontSize: 16.0),
             selectedItemBuilder: (BuildContext context) {
               return [

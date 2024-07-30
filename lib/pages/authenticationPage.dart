@@ -10,7 +10,7 @@ import 'package:pasadena_mobile_client/pages/registerPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'languageSelectionButton.dart';
+import '../components/languageSelectionButton.dart';
 
 class AuthenticationPage extends StatefulWidget {
 
@@ -41,7 +41,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   void _checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
     setState(() {
       _isLoggedIn = isLoggedIn;
     });
@@ -110,6 +109,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     }
     else
     {
+      debugPrint(response.statusCode.toString());
       final responseJson = jsonDecode(response.body);
       if (responseJson['title'] == 'Bad Request') {
         throw showDialog(

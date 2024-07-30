@@ -9,7 +9,12 @@ class HomePage extends StatefulWidget {
   final Function() logoutCallback;
   bool isLoggedIn;
 
-  HomePage({super.key, required this.logoutCallback, required this.isLoggedIn});
+  HomePage(
+      {
+        super.key,
+        required this.logoutCallback,
+        required this.isLoggedIn,
+      });
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,13 +23,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
+  String locale = "";
+
   late List<Widget> _tabs;
 
   @override
   void initState() {
     super.initState();
     _tabs = [
-      Tab1Page(logoutCallback: widget.logoutCallback, isLoggedIn: widget.isLoggedIn,),
+      Tab1Page(
+        logoutCallback: widget.logoutCallback,
+        isLoggedIn: widget.isLoggedIn,
+        locale: locale,
+      ),
       const Tab2Page(),
       const Tab3Page(),
     ];
@@ -32,6 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    locale = Localizations.localeOf(context).languageCode;
     return DefaultTabController(
       length: _tabs.length,
       initialIndex: _currentIndex,

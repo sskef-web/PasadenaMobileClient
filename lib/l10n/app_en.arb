@@ -26,11 +26,18 @@
     "emailConfirm": "Confirmation of e-mail address",
     "codeSent": "You have been sent a code to Email",
     "send": "Send",
-    "recoveryPass": "Password recovery",
+    "recoveryPass": "Change password",
     "recoveryPassAbout": "Please, write new password!",
     "emailConfirmed": "Email confirmed",
     "retry": "Retry",
     "continued": "Continue",
     "passwordEmailError": "The email or password is not correct",
-    "errorLogin": "Couldn't get in"
+    "errorLogin": "Couldn't get in",
+    "userProfile": "User profile",
+    "appLanguage": "App language",
+    "emailConfirmAbout": "After changing your mailbox, you will need to verify again via email!",
+    "save": "Save",
+    "editProfile": "Edit profile",
+    "refreshTokenError": "Error during token update",
+    "emailEmpty":"Wprowadź swój adres e-mail w polu \"E-mail\""
 }

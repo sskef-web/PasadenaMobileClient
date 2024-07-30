@@ -1,4 +1,5 @@
 class Employee {
+  final int id;
   final String photoUrl;
   final String firstName;
   final String lastName;
@@ -9,6 +10,7 @@ class Employee {
   bool isFavorite;
 
   Employee({
+    required this.id,
     required this.photoUrl,
     required this.firstName,
     required this.lastName,

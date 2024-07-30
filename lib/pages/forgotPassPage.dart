@@ -50,6 +50,7 @@ class _ForgotPassPage extends State<ForgotPassPage> {
     super.dispose();
   }
 
+
   void updateProofCode(String code) {
     setState(() {
       proofCode = code;

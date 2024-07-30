@@ -35,6 +35,9 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               fontFamily: 'Exo2',
+              colorScheme: ColorScheme.fromSeed(
+                brightness: Brightness.light, seedColor: Colors.white,
+              ),
             ),
             darkTheme: ThemeData(
               colorScheme: ColorScheme.fromSeed(

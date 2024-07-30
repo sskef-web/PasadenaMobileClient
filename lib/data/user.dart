@@ -1,25 +1,28 @@
+import 'reservations.dart';
+
 class User {
-  final int id;
   final String firstName;
   final String lastName;
-  final String avatar;
   final String email;
+  final List<Reservation> reservations;
 
-  const User({
-    required this.id,
+  User({
     required this.firstName,
     required this.lastName,
-    required this.avatar,
-    required this.email
+    required this.email,
+    required this.reservations,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    var reservationList = json['reservations'] as List;
+    List<Reservation> reservations =
+    reservationList.map((reservation) => Reservation.fromJson(reservation)).toList();
+
     return User(
-      id: json['id'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      avatar: json['avatar'],
       email: json['email'],
+      reservations: reservations,
     );
   }
 }

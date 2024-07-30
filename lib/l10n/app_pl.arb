@@ -26,11 +26,18 @@
     "emailConfirm": "Potwierdzenie adresu e-mail",
     "codeSent": "Otrzymałeś kod na adres e-mail",
     "send": "Wyślij",
-    "recoveryPass": "Odzyskiwanie hasła",
+    "recoveryPass": "Zmiana hasła",
     "recoveryPassAbout": "Podaj nowe hasło!",
     "emailConfirmed": "Poczta potwierdzona.",
     "retry": "Powtórzenie",
     "continued": "Kontynuacja",
     "passwordEmailError": "Adres e-mail lub hasło są nieprawidłowe",
-    "errorLogin": "Nie udało się wejść"
+    "errorLogin": "Nie udało się wejść",
+    "userProfile": "Profil użytkownika",
+    "appLanguage": "Język aplikacji",
+    "emailConfirmAbout": "Po zmianie skrzynki pocztowej konieczna będzie ponowna weryfikacja przez e-mail!",
+    "save": "Zapisz",
+    "editProfile": "Zmień profil",
+    "refreshTokenError": "Błąd aktualizacji tokena",
+    "emailEmpty": "Enter your e-mail in the E-mail field"
 }
