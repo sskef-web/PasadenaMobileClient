@@ -89,7 +89,7 @@ class _LanguageSelectionButtonState extends State<LanguageSelectionButton> {
               ),
             ],
             hint: Text(
-              _nowLocale,
+              Localizations.localeOf(context).languageCode.toUpperCase(),
               style: const TextStyle(
                 color: Color.fromRGBO(255, 215, 0, 1.0),
                 fontSize: 16.0,

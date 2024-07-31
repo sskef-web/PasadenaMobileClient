@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pasadena_mobile_client/data/language_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageSelectionTextField extends StatefulWidget {
   const LanguageSelectionTextField({Key? key});
@@ -51,7 +50,7 @@ class _LanguageSelectionTextFieldState extends State<LanguageSelectionTextField>
                   onChanged: (Locale? newValue) {
                     setState(() {
                       selectedLocale = newValue;
-                      switch (selectedLocale!.languageCode) {
+                      switch (selectedLocale) {
                         case 'ru':
                           _nowLocale = 'RU';
                           break;
@@ -101,7 +100,7 @@ class _LanguageSelectionTextFieldState extends State<LanguageSelectionTextField>
                     ),
                   ],
                   hint: Text(
-                    _nowLocale,
+                    Localizations.localeOf(context).languageCode.toUpperCase(),
                     style: const TextStyle(
                       color: Color.fromRGBO(168, 168, 168, 1),
                       fontSize: 16.0,
@@ -143,7 +142,7 @@ class _LanguageSelectionTextFieldState extends State<LanguageSelectionTextField>
                         ),
                       ),
                     ];
-                  }, icon: Icon(Icons.arrow_drop_down, color: Color.fromRGBO(168, 168, 168, 1),),
+                  }, icon: const Icon(Icons.arrow_drop_down, color: Color.fromRGBO(168, 168, 168, 1),),
                 ),
               ],
             ),
