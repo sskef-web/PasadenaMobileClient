@@ -140,7 +140,7 @@ class _Tab3Page extends State<Tab3Page> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Список мастеров',
+                                AppLocalizations.of(context)!.listMasters,
                                 style: const TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.normal,
@@ -181,7 +181,7 @@ class _Tab3Page extends State<Tab3Page> {
                                           child: DropdownButton<String>(
                                             isExpanded: true,
                                             value: selectedProcedureType,
-                                            hint: Text('Выберите тип работы', style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1))),
+                                            hint: Text(AppLocalizations.of(context)!.selectProcedure, style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1))),
                                             onChanged: (value) {
                                               setState(() {
                                                 selectedProcedureType = value!;
@@ -220,7 +220,7 @@ class _Tab3Page extends State<Tab3Page> {
                                           child: DropdownButton<String>(
                                             isExpanded: true,
                                             value: selectedStatus,
-                                            hint: Text('Выберите статус', style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1))),
+                                            hint: Text(AppLocalizations.of(context)!.selectStatus, style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1))),
                                             onChanged: (value) {
                                               setState(() {
                                                 selectedStatus = value!;

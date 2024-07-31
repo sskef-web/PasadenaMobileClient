@@ -19,13 +19,12 @@ class Tab1Page extends StatefulWidget {
   bool isLoggedIn;
   String locale;
 
-  Tab1Page(
-      {
-        super.key,
-        required this.logoutCallback,
-        required this.isLoggedIn,
-        required this.locale,
-      });
+  Tab1Page({
+    super.key,
+    required this.logoutCallback,
+    required this.isLoggedIn,
+    required this.locale,
+  });
 
   @override
   _Tab1Page createState() => _Tab1Page();
@@ -43,7 +42,10 @@ class _Tab1Page extends State<Tab1Page> {
   bool isFirstDateSelected = false;
 
   void firstFocusDate(User user) {
-    DateTime initialFocusDate = _focusDates.isNotEmpty ? DateTime(_focusDates[0].year, _focusDates[0].month, _focusDates[0].day) : DateTime.now();
+    DateTime initialFocusDate = _focusDates.isNotEmpty
+        ? DateTime(
+            _focusDates[0].year, _focusDates[0].month, _focusDates[0].day)
+        : DateTime.now();
     _focusDate = initialFocusDate;
     filteredOrders = filterOrdersByDate(user.reservations, _focusDate);
     _selectedDateTime = _focusDate;
@@ -52,8 +54,10 @@ class _Tab1Page extends State<Tab1Page> {
 
   void fillFocusDates(List<DateTime> focusDates, User user) {
     user.reservations.forEach((order) {
-      focusDates.add(DateTime(order.date.year, order.date.month, order.date.day));
-      debugPrint('\n\n ==== ordersDateTime - ${order.date} ==== _focusDates - ${focusDates.last}');
+      focusDates
+          .add(DateTime(order.date.year, order.date.month, order.date.day));
+      debugPrint(
+          '\n\n ==== ordersDateTime - ${order.date} ==== _focusDates - ${focusDates.last}');
     });
   }
 
@@ -65,7 +69,9 @@ class _Tab1Page extends State<Tab1Page> {
   }
 
   bool isSameDate(DateTime date1, DateTime date2) {
-    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   void _logout() async {
@@ -95,12 +101,14 @@ class _Tab1Page extends State<Tab1Page> {
     });
   }
 
-  List<Reservation> filterOrdersByDate(List<Reservation> orders, DateTime date) {
-    return orders.where((order) =>
-    order.date.year == date.year &&
-        order.date.month == date.month &&
-        order.date.day == date.day
-    ).toList();
+  List<Reservation> filterOrdersByDate(
+      List<Reservation> orders, DateTime date) {
+    return orders
+        .where((order) =>
+            order.date.year == date.year &&
+            order.date.month == date.month &&
+            order.date.day == date.day)
+        .toList();
   }
 
   Future<void> saveCookies(String cookies) async {
@@ -129,7 +137,8 @@ class _Tab1Page extends State<Tab1Page> {
     } else {
       widget.logoutCallback();
       navigateToAuthPage();
-      throw Exception('${AppLocalizations.of(context)!.refreshTokenError} (code: ${response.statusCode}');
+      throw Exception(
+          '${AppLocalizations.of(context)!.refreshTokenError} (code: ${response.statusCode}');
     }
   }
 
@@ -170,8 +179,7 @@ class _Tab1Page extends State<Tab1Page> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (BuildContext context) =>
-              AuthenticationPage()),
+          builder: (BuildContext context) => AuthenticationPage()),
     );
   }
 
@@ -182,10 +190,8 @@ class _Tab1Page extends State<Tab1Page> {
     debugPrint(url.toString());
     debugPrint(Localizations.localeOf(context).languageCode);
 
-    var response = await http.get(url, headers: {
-      'Cookie': cookies,
-      'Accept-Language': widget.locale
-    });
+    var response = await http.get(url,
+        headers: {'Cookie': cookies, 'Accept-Language': widget.locale});
     debugPrint('${response.statusCode}');
 
     if (response.statusCode == 200) {
@@ -209,10 +215,13 @@ class _Tab1Page extends State<Tab1Page> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (BuildContext context) =>
-              HomePage(logoutCallback: widget.logoutCallback, isLoggedIn: widget.isLoggedIn,)),
+          builder: (BuildContext context) => HomePage(
+                logoutCallback: widget.logoutCallback,
+                isLoggedIn: widget.isLoggedIn,
+              )),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     AsyncSnapshot<List<dynamic>>? currentSnapshot;
@@ -247,7 +256,7 @@ class _Tab1Page extends State<Tab1Page> {
           ),
         ),
         child: SafeArea(
-          child: FutureBuilder (
+          child: FutureBuilder(
             future: Future.wait([_userFuture]),
             builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
               currentSnapshot = snapshot;
@@ -255,7 +264,10 @@ class _Tab1Page extends State<Tab1Page> {
                 final user = snapshot.data![0] as User;
                 return LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    filteredOrders = user.reservations.where((order) => isSameDate(order.date, _selectedDateTime)).toList();
+                    filteredOrders = user.reservations
+                        .where((order) =>
+                            isSameDate(order.date, _selectedDateTime))
+                        .toList();
                     fillFocusDates(_focusDates, user);
                     if (!isFirstDateSelected) {
                       firstFocusDate(user);
@@ -268,7 +280,7 @@ class _Tab1Page extends State<Tab1Page> {
                         Container(
                           height: constraints.maxHeight * 0.2,
                           padding: const EdgeInsets.all(32),
-                          alignment: Alignment.bottomLeft,
+                          alignment: Alignment.centerLeft,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,7 +293,8 @@ class _Tab1Page extends State<Tab1Page> {
                                     color: Colors.white),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
@@ -295,17 +308,21 @@ class _Tab1Page extends State<Tab1Page> {
                                     width: 42,
                                     height: 42,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(25.0)),
                                       border: Border.all(
                                           color: Colors.white,
                                           width: 2.0,
                                           style: BorderStyle.solid,
-                                          strokeAlign: BorderSide.strokeAlignInside),
+                                          strokeAlign:
+                                              BorderSide.strokeAlignInside),
                                     ),
                                     child: IconButton(
-                                      icon: const Icon(Icons.edit, color: Colors.white, size: 22),
+                                      icon: const Icon(Icons.edit,
+                                          color: Colors.white, size: 22),
                                       onPressed: () {
-                                        editProfile(user.firstName, user.lastName, user.email);
+                                        editProfile(user.firstName,
+                                            user.lastName, user.email);
                                       },
                                     ),
                                   ),
@@ -324,169 +341,206 @@ class _Tab1Page extends State<Tab1Page> {
                             ),
                           ),
                           padding: const EdgeInsets.all(32.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              EasyInfiniteDateTimeLine(
-                                headerBuilder: (
-                                    BuildContext context,
-                                    DateTime date
-                                    )
-                                {
-                                  final dateFormat = DateFormat.yMMMM(Localizations.localeOf(context).languageCode);
-                                  return Container(
-                                    height: 50,
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.arrow_back_ios),
-                                          color: const Color.fromRGBO(136, 136, 136, 1),
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedDateTime = DateTime(_selectedDateTime.year, _selectedDateTime.month - 1);
-                                              debugPrint(_selectedDateTime.toString());
-                                            });
-                                          },
-                                        ),
-                                        Text(
-                                          dateFormat.format(_selectedDateTime),
-                                          style: const TextStyle(color: Color.fromRGBO(136, 136, 136, 1)),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.arrow_forward_ios),
-                                          color: const Color.fromRGBO(136, 136, 136, 1),
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedDateTime = DateTime(_selectedDateTime.year, _selectedDateTime.month + 1);
-                                              debugPrint('${_selectedDateTime.toString()} =================================');
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                selectionMode: const SelectionMode.autoCenter(),
-                                firstDate: DateTime(_selectedDateTime.year, _selectedDateTime.month, 1),
-                                focusDate: _focusDate,
-                                lastDate: DateTime(_selectedDateTime.year, _selectedDateTime.month, 31),
-                                onDateChange: (selectedDate) {
-                                  setState(() {
-                                    _focusDate = selectedDate;
-                                    _selectedDate = selectedDate;
-                                    _selectedDateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day);
-                                    updateFilteredOrders(user, _focusDate);
-                                    filteredOrders = filterOrdersByDate(user.reservations, _focusDate);
-                                  });
-                                },
-                                dayProps: const EasyDayProps(
-                                  width: 64.0,
-                                  height: 96.0,
-                                ),
-                                itemBuilder: (
-                                    BuildContext context,
-                                    DateTime date,
-                                    bool isSelected,
-                                    VoidCallback onTap,
-                                    )
-                                {
-                                  //debugPrint('\n\n\n ======================= builder ${date} ||| now ${_nowDateTime}  |||| focus ${_focusDates[1]} ================\n\n\n');
-                                  return InkResponse(
-                                    onTap: onTap,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(232, 232, 232, 1),
-                                        border:
-                                        isSelected
-                                            ? Border.all(
-                                            color: const Color.fromRGBO(204, 204, 204, 1),
-                                            width: 4.0,
-                                            style: BorderStyle.solid,
-                                            strokeAlign: BorderSide.strokeAlignInside
-                                        ) : _focusDates.contains(date)
-                                            ? Border.all(color: Colors.transparent, width: 0.0,)
-                                            : Border.all(
-                                            color: const Color.fromRGBO(204, 204, 204, 1),
-                                            width: 2.0,
-                                            style: BorderStyle.solid,
-                                            strokeAlign: BorderSide.strokeAlignInside
-                                        ),
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                        gradient: _focusDates.contains(date)
-                                            ? const LinearGradient(
-                                          colors: [
-                                            Color.fromRGBO(17, 45, 48, 1),
-                                            Color.fromRGBO(1, 86, 81, 1),
-                                          ],
-                                          stops: [0.0, 0.5],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ) : null,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                EasyInfiniteDateTimeLine(
+                                  headerBuilder:
+                                      (BuildContext context, DateTime date) {
+                                    final dateFormat = DateFormat.yMMMM(
+                                        Localizations.localeOf(context)
+                                            .languageCode);
+                                    return Container(
+                                      height: 50,
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Flexible(
-                                            child: Text(
-                                              EasyDateFormatter.shortDayName(
-                                                  date, Localizations
-                                                  .localeOf(context)
-                                                  .languageCode)
-                                                  .toUpperCase(),
-                                              style: TextStyle(
-                                                color: _focusDates.contains(date)
-                                                    ? Colors.white
-                                                    : const Color.fromRGBO(136, 136, 136, 1),
-                                              ),
-                                            ),
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.arrow_back_ios),
+                                            color: const Color.fromRGBO(
+                                                136, 136, 136, 1),
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedDateTime = DateTime(
+                                                    _selectedDateTime.year,
+                                                    _selectedDateTime.month -
+                                                        1);
+                                                debugPrint(_selectedDateTime
+                                                    .toString());
+                                              });
+                                            },
                                           ),
-                                          Flexible(
-                                            child: Text(
-                                              date.day.toString(),
-                                              style: TextStyle(
-                                                color: _focusDates.contains(date)
-                                                    ? Colors.white
-                                                    : const Color.fromRGBO(1, 86, 81, 1),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 21,
-                                              ),
-                                            ),
+                                          Text(
+                                            dateFormat
+                                                .format(_selectedDateTime),
+                                            style: const TextStyle(
+                                                color: Color.fromRGBO(
+                                                    136, 136, 136, 1)),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.arrow_forward_ios),
+                                            color: const Color.fromRGBO(
+                                                136, 136, 136, 1),
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedDateTime = DateTime(
+                                                    _selectedDateTime.year,
+                                                    _selectedDateTime.month +
+                                                        1);
+                                                debugPrint(
+                                                    '${_selectedDateTime.toString()} =================================');
+                                              });
+                                            },
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 16.0),
-                              const Text(
-                                'СПИСОК БРОНИРОВАНИЯ',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(1, 86, 81, 1),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16
+                                    );
+                                  },
+                                  selectionMode:
+                                      const SelectionMode.autoCenter(),
+                                  firstDate: DateTime(_selectedDateTime.year,
+                                      _selectedDateTime.month, 1),
+                                  focusDate: _focusDate,
+                                  lastDate: DateTime(_selectedDateTime.year,
+                                      _selectedDateTime.month, 31),
+                                  onDateChange: (selectedDate) {
+                                    setState(() {
+                                      _focusDate = selectedDate;
+                                      _selectedDate = selectedDate;
+                                      _selectedDateTime = DateTime(
+                                          _selectedDate.year,
+                                          _selectedDate.month,
+                                          _selectedDate.day);
+                                      updateFilteredOrders(user, _focusDate);
+                                      filteredOrders = filterOrdersByDate(
+                                          user.reservations, _focusDate);
+                                    });
+                                  },
+                                  dayProps: const EasyDayProps(
+                                    width: 64.0,
+                                    height: 96.0,
+                                  ),
+                                  itemBuilder: (BuildContext context,
+                                      DateTime date,
+                                      bool isSelected,
+                                      VoidCallback onTap) {
+                                    return InkResponse(
+                                      onTap: onTap,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              232, 232, 232, 1),
+                                          border: isSelected
+                                              ? Border.all(
+                                                  color: const Color.fromRGBO(
+                                                      204, 204, 204, 1),
+                                                  width: 4.0,
+                                                  style: BorderStyle.solid,
+                                                  strokeAlign: BorderSide
+                                                      .strokeAlignInside)
+                                              : _focusDates.contains(date)
+                                                  ? Border.all(
+                                                      color: Colors.transparent,
+                                                      width: 0.0)
+                                                  : Border.all(
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              204, 204, 204, 1),
+                                                      width: 2.0,
+                                                      style: BorderStyle.solid,
+                                                      strokeAlign: BorderSide
+                                                          .strokeAlignInside),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          gradient: _focusDates.contains(date)
+                                              ? const LinearGradient(
+                                                  colors: [
+                                                    Color.fromRGBO(
+                                                        17, 45, 48, 1),
+                                                    Color.fromRGBO(
+                                                        1, 86, 81, 1),
+                                                  ],
+                                                  stops: [0.0, 0.5],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                )
+                                              : null,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                EasyDateFormatter.shortDayName(
+                                                        date,
+                                                        Localizations.localeOf(
+                                                                context)
+                                                            .languageCode)
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color: _focusDates
+                                                          .contains(date)
+                                                      ? Colors.white
+                                                      : const Color.fromRGBO(
+                                                          136, 136, 136, 1),
+                                                ),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                date.day.toString(),
+                                                style: TextStyle(
+                                                  color: _focusDates
+                                                          .contains(date)
+                                                      ? Colors.white
+                                                      : const Color.fromRGBO(
+                                                          1, 86, 81, 1),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 21,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              filteredOrders == null ? const Text(
+                                const SizedBox(height: 16.0),
+                                const Text(
                                   'СПИСОК БРОНИРОВАНИЯ',
                                   style: TextStyle(
                                       color: Color.fromRGBO(1, 86, 81, 1),
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 16
-                                  ))
-                                  : Expanded(
-                                child: Expanded(
-                                  child: ListView.builder(
+                                      fontSize: 16),
+                                ),
+                                const SizedBox(height: 16.0),
+                                if (filteredOrders == null)
+                                  const Text(
+                                    'СПИСОК БРОНИРОВАНИЯ',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(1, 86, 81, 1),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
+                                  )
+                                else
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
                                     itemCount: filteredOrders.length,
                                     itemBuilder: (context, index) {
                                       Reservation order = filteredOrders[index];
                                       return OrderBlock(
                                         headImageUrl: order.pictureUrl,
-                                        employeeImageUrl: order.employeeAvatarUrl,
+                                        employeeImageUrl:
+                                            order.employeeAvatarUrl,
                                         title: order.title,
                                         employeeName: order.employeeName,
                                         selectedDateTime: order.date,
@@ -494,9 +548,8 @@ class _Tab1Page extends State<Tab1Page> {
                                       );
                                     },
                                   ),
-                                )
-                              )
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -505,11 +558,14 @@ class _Tab1Page extends State<Tab1Page> {
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text('${AppLocalizations.of(context)!.error} (Snapshot error) ${snapshot.error}'),
+                  child: Text(
+                      '${AppLocalizations.of(context)!.error} (Snapshot error) ${snapshot.error}'),
                 );
               } else {
                 return const Center(
-                  child: CircularProgressIndicator(color: Colors.white,),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 );
               }
             },

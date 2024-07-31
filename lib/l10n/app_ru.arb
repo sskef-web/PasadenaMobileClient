@@ -39,5 +39,8 @@
     "save": "Сохранить",
     "editProfile": "Изменить профиль",
     "refreshTokenError": "Ошибка при обновлении токена авторизации",
-    "emailEmpty":"Укажите почту в поле \"E-mail\""
+    "emailEmpty":"Укажите почту в поле \"E-mail\"",
+    "selectStatus": "Выберите статус",
+    "selectProcedure": "Выберите тип работы",
+    "listMasters": "Список мастеров"
 }

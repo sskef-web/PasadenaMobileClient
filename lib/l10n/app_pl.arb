@@ -39,5 +39,8 @@
     "save": "Zapisz",
     "editProfile": "Zmień profil",
     "refreshTokenError": "Błąd aktualizacji tokena",
-    "emailEmpty": "Enter your e-mail in the E-mail field"
+    "emailEmpty": "Enter your e-mail in the E-mail field",
+    "selectStatus": "Wybierz status",
+    "selectProcedure": "Wybierz rodzaj pracy",
+    "listMasters": "Lista główna"
 }
