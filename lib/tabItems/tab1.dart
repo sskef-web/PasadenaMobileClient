@@ -206,7 +206,7 @@ class _Tab1Page extends State<Tab1Page> {
       _updatePage();
       return fetchUser();
     } else {
-      debugPrint('USER INFO FETCH ERROR. tatus code: ${response.statusCode}');
+      debugPrint('USER INFO FETCH ERROR. Status code: ${response.statusCode}');
       throw Exception(AppLocalizations.of(context)!.error);
     }
   }

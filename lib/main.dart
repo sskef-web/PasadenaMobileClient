@@ -36,12 +36,24 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
               fontFamily: 'Exo2',
               colorScheme: ColorScheme.fromSeed(
-                brightness: Brightness.light, seedColor: Colors.white,
+                primary: Colors.white,
+                surface: Colors.white,
+                secondary: Colors.white,
+                brightness: Brightness.light,
+                seedColor: Colors.transparent,
+                  primaryContainer: Colors.white,
+                  dynamicSchemeVariant: DynamicSchemeVariant.neutral
               ),
             ),
             darkTheme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                brightness: Brightness.dark, seedColor: Colors.transparent,
+                primary: Colors.white,
+                surface: Colors.white,
+                secondary: Colors.white,
+                brightness: Brightness.dark,
+                seedColor: Colors.transparent,
+                primaryContainer: Colors.white,
+                  dynamicSchemeVariant: DynamicSchemeVariant.neutral
               ),
               useMaterial3: true,
               fontFamily: 'Exo2',
