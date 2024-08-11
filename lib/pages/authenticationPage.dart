@@ -105,33 +105,63 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       token = extractTokenFromCookies(cookies);
       userId = extractUserIdFromCookies(cookies);
       refreshToken = extractRefreshTokenFromCookies(cookies);
+      debugPrint('LOGIN SUCCESS - ${response.statusCode}');
       return LoginResponse(token, userId, refreshToken, response.body);
     }
     else
     {
-      debugPrint(response.statusCode.toString());
+      debugPrint('LOGIN ERROR. Status Code ${response.statusCode}\nLOGIN ERROR - ${response.body}');
       final responseJson = jsonDecode(response.body);
       if (responseJson['title'] == 'Bad Request') {
         throw showDialog(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(AppLocalizations.of(context)!.error),
-              content: Text(AppLocalizations.of(context)!.passwordEmailError),
-              actions: [
-                TextButton(
-                  child: Text(AppLocalizations.of(context)!.continued),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+          builder: (BuildContext dialogContext) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xff112d30),
+                      Color(0xff112d30),
+                      Color(0xff044f4b),
+                      Color(0xff015651),
+                    ],
+                    stops: [0.03, 0.27, 0.86, 1],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ), borderRadius: BorderRadius.circular(10.0),
                 ),
-              ],
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text (AppLocalizations.of(context)!.error, textAlign: TextAlign.center, textScaler: const TextScaler.linear(1.2)),
+                    Text (AppLocalizations.of(context)!.passwordEmailError, textAlign: TextAlign.center,),
+                    const SizedBox(height: 16.0,),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromRGBO(1, 86, 81, 1),
+                          foregroundColor: Colors.white
+                      ),
+                      child: Text(AppLocalizations.of(context)!.continued),
+                    ),
+                  ],
+                ),
+              ),
             );
           },
         );
       }
       else
       {
+        debugPrint('LOGIN ERROR. Status Code ${response.statusCode}\LOGIN ERROR - ${response.body}');
         String emailError = '${responseJson['errors']['Email']}';
         String passError = '${responseJson['errors']['Password']}';
         //throw Exception('Failed to login: ${response.statusCode}');
@@ -183,8 +213,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       var token = extractTokenFromCookies(cookies);
       var userId = extractUserIdFromCookies(cookies);
       var refreshToken = extractRefreshTokenFromCookies(cookies);
+      debugPrint('REGISTRATION SUCCESS - ${response.statusCode}');
       return LoginResponse(token!, userId!, refreshToken!, response.body);
     } else {
+      debugPrint('REGISTRATION ERROR. Status Code ${response.statusCode}\nREGISTRATION ERROR - ${response.body}');
       throw response.body;
     }
   }

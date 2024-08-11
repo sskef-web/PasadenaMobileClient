@@ -3,6 +3,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pasadena_mobile_client/main.dart';
 import '../data/reservations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -56,8 +57,7 @@ class _Tab1Page extends State<Tab1Page> {
     user.reservations.forEach((order) {
       focusDates
           .add(DateTime(order.date.year, order.date.month, order.date.day));
-      debugPrint(
-          '\n\n ==== ordersDateTime - ${order.date} ==== _focusDates - ${focusDates.last}');
+      debugPrint('==== ordersDateTime - ${order.date} ==== _focusDates - ${focusDates.last}');
     });
   }
 
@@ -122,8 +122,10 @@ class _Tab1Page extends State<Tab1Page> {
   }
 
   Future<void> refreshToken() async {
-    var refreshUrl = Uri.parse('https://sskef.site/auth/refresh');
+    var refreshUrl = Uri.parse('${baseURL}auth/refresh');
     var cookies = await loadCookies();
+
+    debugPrint('COOKIES - $cookies');
 
     var response = await http.get(refreshUrl, headers: {
       'Cookie': cookies!,
@@ -134,9 +136,11 @@ class _Tab1Page extends State<Tab1Page> {
       if (newCookies != null) {
         await saveCookies(newCookies);
       }
+      debugPrint('REFRESH TOKEN SUCCESS. Status code: ${response.statusCode}');
     } else {
       widget.logoutCallback();
       navigateToAuthPage();
+      debugPrint('REFRESH TOKEN ERROR. Status code: ${response.statusCode}');
       throw Exception(
           '${AppLocalizations.of(context)!.refreshTokenError} (code: ${response.statusCode}');
     }
@@ -186,24 +190,23 @@ class _Tab1Page extends State<Tab1Page> {
   Future<User> fetchUser() async {
     var cookies = await loadCookies();
     userId = extractUserIdFromCookies(cookies!)!;
-    var url = Uri.parse('https://sskef.site/api/profile');
-    debugPrint(url.toString());
-    debugPrint(Localizations.localeOf(context).languageCode);
+    var url = Uri.parse('${baseURL}profile');
 
     var response = await http.get(url,
         headers: {'Cookie': cookies, 'Accept-Language': widget.locale});
-    debugPrint('${response.statusCode}');
 
     if (response.statusCode == 200) {
-      debugPrint('${response.body}');
+      debugPrint('USER INFO FETCH SUCCESS. Status code: ${response.statusCode}');
       var jsonData = jsonDecode(response.body);
       var user = User.fromJson(jsonData);
       return user;
     } else if (response.statusCode == 401) {
+      debugPrint('USER INFO FETCH ERROR. Status code: ${response.statusCode}');
       await refreshToken();
       _updatePage();
       return fetchUser();
     } else {
+      debugPrint('USER INFO FETCH ERROR. tatus code: ${response.statusCode}');
       throw Exception(AppLocalizations.of(context)!.error);
     }
   }
@@ -370,8 +373,8 @@ class _Tab1Page extends State<Tab1Page> {
                                                     _selectedDateTime.year,
                                                     _selectedDateTime.month -
                                                         1);
-                                                debugPrint(_selectedDateTime
-                                                    .toString());
+                                                debugPrint('Selected date time - ${_selectedDateTime
+                                                    .toString()}');
                                               });
                                             },
                                           ),
@@ -394,7 +397,7 @@ class _Tab1Page extends State<Tab1Page> {
                                                     _selectedDateTime.month +
                                                         1);
                                                 debugPrint(
-                                                    '${_selectedDateTime.toString()} =================================');
+                                                    'Selected date time - ${_selectedDateTime.toString()}');
                                               });
                                             },
                                           ),
