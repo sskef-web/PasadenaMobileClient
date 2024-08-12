@@ -246,8 +246,7 @@ class _ChangePasswordPage extends State<ChangePasswordPage> {
                           obscureText: !isConfirmPasswordVisible,
                           onChanged: (value) {
                             setState(() {
-                              password = value;
-                              isConfirmedPasswordValid = password == value && validatePassword(value);
+                              isConfirmedPasswordValid = password == value && validatePassword(value) && password != value;
                             });
                           },
                           decoration: InputDecoration(
